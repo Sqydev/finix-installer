@@ -7,6 +7,7 @@ CPUS := 4
 DISK_SIZE := 30G
 
 CAL_CFG := ./src/calamares
+UCAL_CFG := ./src/ucalamares
 CFG_DISK := build/calamares.img
 
 .PHONY: run disk install clean reset
@@ -32,6 +33,7 @@ run: $(ISO) disk
 		-cdrom $(ISO) \
 		-drive file=$(DISK),format=qcow2 \
 		-virtfs local,path=$(CAL_CFG),mount_tag=CALAMARES,security_model=mapped,id=CALAMARES \
+		-virtfs local,path=$(UCAL_CFG),mount_tag=UCALAMARES,security_model=mapped,id=UCALAMARES \
 		-boot order=d
 
 reset:
