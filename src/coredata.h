@@ -8,4 +8,6 @@ typedef struct {
 	int cursorPos;
 } CoreData;
 
+extern CoreData DATA;
+
 #endif

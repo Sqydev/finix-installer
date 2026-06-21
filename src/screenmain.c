@@ -1,7 +1,8 @@
 #include "../libs/esclib.h"
 
+#include "./coredata.h"
+
 void drawScreenmain() {
-	BeginDrawing();
 	ClearTui(TERMBLACK, TERMWHITE);
 
 	DrawText("Welcome to the finix installer", 0, 0, TERMWHITE);
@@ -24,12 +25,28 @@ void drawScreenmain() {
 	DrawText("Install", 3, 4, TERMWHITE);
 	DrawText("Abort", 3, 4, TERMWHITE);
 
-	EndDrawing();
+	DrawChar(">", 1, DATA.cursorPos + 2, TERMWHITE);
 }
 
 void screenmain(void) {
+	DATA.cursorPos = 0;
+
 	drawScreenmain();
 
 	while(1) {
+		BeginDrawing();
+		
+		if(IsKeyPressed(KEY_W)) {
+			DATA.cursorPos--;
+			if(DATA.cursorPos < 0) { DATA.cursorPos = 0; }
+		}
+		if(IsKeyPressed(KEY_S)) {
+			DATA.cursorPos++;
+			if(DATA.cursorPos > 12) { DATA.cursorPos = 12; }
+		}
+
+		drawScreenmain();
+
+		EndDrawing();
 	}
 }
