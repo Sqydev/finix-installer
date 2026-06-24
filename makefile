@@ -21,6 +21,8 @@ CFLAGS := \
 	-std=c99 \
 	-Wall \
 	-Wextra \
+	-Werror \
+	-D_POSIX_C_SOURCE=200809L \
 	-O2 \
 	-I$(LIB_DIR)/include
 
