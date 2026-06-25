@@ -2,10 +2,12 @@
 #define FINIX_INSTALLER_COREDATA_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 typedef enum {
 	SCREEN_MAIN,
 	SCREEN_TIMEZONE,
+	SCREEN_INSTALLTYPE,
 } Screen;
 
 typedef struct {
@@ -15,6 +17,12 @@ typedef struct {
 		size_t selectedIndex;
 		bool selected;
 	} TimeZone;
+
+	struct {
+		const char* const* strings;
+		size_t selectedIndex;
+		size_t sizeOfStrings;
+	} InstallTypes;
 
 	int cursorPos;
 	Screen currScreen;

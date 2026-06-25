@@ -75,13 +75,13 @@ char** ExtractDirContents(char* path, size_t* dumpContentCount) {
 	return contents;
 }
 
-void SelectFromList(const char* const* list, size_t size, size_t* dumpSelectedTo, bool* dumpIsSelected) {
+void SelectFromList(const char* title, const char* const* list, size_t size, size_t* dumpSelectedTo, bool* dumpIsSelected) {
 	static bool inited = false;
-	if(!inited) { DATA.cursorPos = 2; inited = true; }
+	if(!inited) { DATA.cursorPos = 3; inited = true; }
 
 	static int offset = 0;
 
-	char currStat = HandleCursor(2, GetLastTuiIndex().y, NULL, 0);
+	char currStat = HandleCursor(3, GetLastTuiIndex().y - 2, NULL, 0);
 	if(currStat == 1) {
 		if(offset > 0) { offset--; }
 	}
@@ -89,15 +89,22 @@ void SelectFromList(const char* const* list, size_t size, size_t* dumpSelectedTo
 		if(offset < (int)size) { offset++; }
 	}
 
-	for(int i = 0; i < GetLastTuiIndex().y - 1 && i < (int)size; i++) {
-		DrawText(list[i + offset], 4, i + 2, TERMWHITE);
+	DrawText(title, 0, 0, TERMWHITE);
+
+	int i = 0;
+	while(i < GetLastTuiIndex().y - 4 && i < (int)size) {
+		DrawText(list[i + offset], 4, i + 3, TERMWHITE);
+		i++;
 	}
+
+	DrawText("-------------------------", 4, 2, TERMWHITE);
+	DrawText("-------------------------", 4, i + 3, TERMWHITE);
 
 	if(IsKeyPressed(KEY_ENTER)) {
 		inited = false;
 
-		*dumpSelectedTo = DATA.cursorPos - 2 + offset;
-		*dumpIsSelected = true;
+		*dumpSelectedTo = DATA.cursorPos + offset - 3;
+		if(dumpIsSelected) { *dumpIsSelected = true; }
 		DATA.currScreen = SCREEN_MAIN;
 
 		offset = 0;

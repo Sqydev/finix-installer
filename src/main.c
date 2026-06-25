@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
 	DATA.TimeZone.selectedIndex = 0;
 	DATA.TimeZone.selected = false;
 	DATA.TimeZone.content = GetTimeZones(&DATA.TimeZone.linesCount);
+	DATA.InstallTypes.strings = GetInstallTypes(&DATA.InstallTypes.sizeOfStrings);
 
 	screenmain();
 

@@ -1,4 +1,8 @@
+#include "coredata.h"
+
 #include <stddef.h>
+
+const char* const InternaleInstallTypes[] = { "Channel based", "Flake based" };
 
 const char* const InternalTimeZones[] = {
 	"Africa/Abidjan",
@@ -604,4 +608,9 @@ const char* const InternalTimeZones[] = {
 const char* const* GetTimeZones(size_t* dumpSizeTo) {
 	*dumpSizeTo = sizeof(InternalTimeZones) / sizeof(InternalTimeZones[0]);
 	return InternalTimeZones;
+}
+
+const char* const* GetInstallTypes(size_t* dumpSizeTo) {
+	*dumpSizeTo = sizeof(InternaleInstallTypes) / sizeof(InternaleInstallTypes[0]);
+	return InternaleInstallTypes;
 }

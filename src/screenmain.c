@@ -4,16 +4,15 @@
 #include "fns.h"
 
 void DoScreenmain() {
-	ClearTui(TERMBLACK, TERMWHITE);
-
 	static bool inited = false;
 	if(!inited) { DATA.cursorPos = 2; inited = true; }
 
-	int Skip[2] = { 14, 16 };
-	HandleCursor(2, 18, Skip, 2);
+	int Skip[2] = { 15, 17 };
+	HandleCursor(2, 19, Skip, 2);
 
-	if(DATA.cursorPos == 13 && IsKeyPressed(KEY_ENTER)) {
-		DATA.currScreen = SCREEN_TIMEZONE;
+	if(IsKeyPressed(KEY_ENTER)) {
+		if(DATA.cursorPos == 13) { DATA.currScreen = SCREEN_TIMEZONE; }
+		else if(DATA.cursorPos == 14) { DATA.currScreen = SCREEN_INSTALLTYPE; }
 	}
 		
 	DrawText("Welcome to the finix installer", 0, 0, TERMWHITE);
@@ -30,11 +29,12 @@ void DoScreenmain() {
 	DrawTextf("Kernels:               %s", 3, 11, TERMWHITE);
 	DrawTextf("Additional pkgs:       %s", 3, 12, TERMWHITE);
 	DrawTextf("Timezone:              %s", 3, 13, TERMWHITE, (DATA.TimeZone.selected) ? DATA.TimeZone.content[DATA.TimeZone.selectedIndex] : "Not selected");
+	DrawTextf("Install type:          %s", 3, 14, TERMWHITE, DATA.InstallTypes.strings[DATA.InstallTypes.selectedIndex]);
 
-	DrawTextf("Premade config:        %s", 3, 15, TERMWHITE);
+	DrawTextf("Premade config:        %s", 3, 16, TERMWHITE);
 
-	DrawText("Install", 3, 17, TERMWHITE);
-	DrawText("Abort", 3, 18, TERMWHITE);
+	DrawText("Install", 3, 18, TERMWHITE);
+	DrawText("Abort", 3, 19, TERMWHITE);
 
 	if(DATA.currScreen != SCREEN_MAIN) { inited = false; }
 }
@@ -42,9 +42,11 @@ void DoScreenmain() {
 void screenmain(void) {
 	DATA.cursorPos = 2;
 	DATA.currScreen = SCREEN_MAIN;
+	DATA.InstallTypes.selectedIndex = 0;
 
 	while(1) {
 		BeginDrawing();
+		ClearTui(TERMBLACK, TERMWHITE);
 
 		switch(DATA.currScreen) {
 			case SCREEN_MAIN: {
@@ -52,8 +54,11 @@ void screenmain(void) {
 				break;
 			}
 			case SCREEN_TIMEZONE: {
-				ClearTui(TERMBLACK, TERMWHITE);
-				SelectFromList(DATA.TimeZone.content, DATA.TimeZone.linesCount, &DATA.TimeZone.selectedIndex, &DATA.TimeZone.selected);
+				SelectFromList("Select timezone", DATA.TimeZone.content, DATA.TimeZone.linesCount, &DATA.TimeZone.selectedIndex, &DATA.TimeZone.selected);
+				break;
+			}
+			case SCREEN_INSTALLTYPE: {
+				SelectFromList("Select install type", DATA.InstallTypes.strings, DATA.InstallTypes.sizeOfStrings, &DATA.InstallTypes.selectedIndex, NULL);
 				break;
 			}
 		}
