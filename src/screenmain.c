@@ -6,6 +6,9 @@
 void DoScreenmain() {
 	ClearTui(TERMBLACK, TERMWHITE);
 
+	static bool inited = false;
+	if(!inited) { DATA.cursorPos = 2; inited = true; }
+
 	int Skip[2] = { 14, 16 };
 	HandleCursor(2, 18, Skip, 2);
 
@@ -32,6 +35,8 @@ void DoScreenmain() {
 
 	DrawText("Install", 3, 17, TERMWHITE);
 	DrawText("Abort", 3, 18, TERMWHITE);
+
+	if(DATA.currScreen != SCREEN_MAIN) { inited = false; }
 }
 
 void screenmain(void) {

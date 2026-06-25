@@ -8,25 +8,39 @@
 #include <stdlib.h>
 #include <string.h>
 
-void HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize) {
+char HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize) {
 	if(IsKeyPressed(KEY_W)) {
 		DATA.cursorPos--;
-		if(DATA.cursorPos < lowestPos) { DATA.cursorPos = lowestPos; }
 
 		for(size_t i = skipSize; i > 0; i--) {
 			if(skip[i - 1] == DATA.cursorPos) { DATA.cursorPos--; }
 		}
+
+		if(DATA.cursorPos < lowestPos) {
+			DATA.cursorPos = lowestPos;
+			DrawChar(">", 1, DATA.cursorPos, TERMWHITE);
+			return 1;
+		}
 	}
 	if(IsKeyPressed(KEY_S)) {
 		DATA.cursorPos++;
-		if(DATA.cursorPos > maxPos) { DATA.cursorPos = maxPos; }
-		
+
 		for(size_t i = 0; i < skipSize; i++) {
-			if(skip[i] == DATA.cursorPos) { DATA.cursorPos++; }
+			if(skip[i] == DATA.cursorPos) {
+				DATA.cursorPos++;
+			}
+		}
+
+		if(DATA.cursorPos > maxPos) {
+			DATA.cursorPos = maxPos;
+			DrawChar(">", 1, DATA.cursorPos, TERMWHITE);
+			return -1;
 		}
 	}
 
 	DrawChar(">", 1, DATA.cursorPos, TERMWHITE);
+
+	return 0;
 }
 
 char** ExtractFile(char* path, size_t* dumpLinesCount) {
@@ -62,13 +76,30 @@ char** ExtractDirContents(char* path, size_t* dumpContentCount) {
 }
 
 void SelectFromList(const char* const* list, size_t size, size_t* dumpSelectedTo, bool* dumpIsSelected) {
-	HandleCursor(0, GetLastTuiIndex().y, NULL, 0);
+	static bool inited = false;
+	if(!inited) { DATA.cursorPos = 2; inited = true; }
 
-	for(int i = 0; i < GetLastTuiIndex().x && i < (int)size; i++) {
-		DrawText(list[i], 4, i, TERMWHITE);
+	static int offset = 0;
+
+	char currStat = HandleCursor(2, GetLastTuiIndex().y, NULL, 0);
+	if(currStat == 1) {
+		if(offset > 0) { offset--; }
+	}
+	else if(currStat == -1) {
+		if(offset < (int)size) { offset++; }
+	}
+
+	for(int i = 0; i < GetLastTuiIndex().y - 1 && i < (int)size; i++) {
+		DrawText(list[i + offset], 4, i + 2, TERMWHITE);
 	}
 
 	if(IsKeyPressed(KEY_ENTER)) {
-		
+		inited = false;
+
+		*dumpSelectedTo = DATA.cursorPos - 2 + offset;
+		*dumpIsSelected = true;
+		DATA.currScreen = SCREEN_MAIN;
+
+		offset = 0;
 	}
 }

@@ -5,7 +5,7 @@
 
 void screenmain(void);
 void DoScreenmain(void);
-void HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize);
+char HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize);
 void SelectFromList(const char* const* list, size_t size, size_t* dumpSelectedTo, bool* dumpIsSelected);
 
 char** ExtractFile(char* path, size_t* dumpLinesCount);
