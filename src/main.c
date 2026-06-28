@@ -1,11 +1,15 @@
 #include "../libs/esclib.h"
 
-#include "./fns.h"
+#include "./screens/screens.h"
 #include "./coredata.h"
 
 #include <signal.h>
 
 CoreData DATA;
+
+void CleanUp(void) {
+	CloseTui();
+}
 
 int main(int argc, char** argv) {
 	(void)argc;
@@ -17,14 +21,33 @@ int main(int argc, char** argv) {
 
 	HideCursor();
 
-	DATA.TimeZone.selectedIndex = 0;
-	DATA.TimeZone.selected = false;
-	DATA.TimeZone.content = GetTimeZones(&DATA.TimeZone.linesCount);
-	DATA.InstallTypes.strings = GetInstallTypes(&DATA.InstallTypes.sizeOfStrings);
+	DATA.screenState = SCREEN_MAIN;
+	DATA.Timezone.selected = false;
+	DATA.Timezone.selectedString = NULL;
 
-	screenmain();
+	for(;;) {
+		BeginDrawing();
 
-	CloseTui();
+		switch(DATA.screenState) {
+			case SCREEN_MAIN: {
+				ScreenMain();
+				break;
+			}
+			case SCREEN_TIMEZONE: {
+				break;
+			}
+			case SCREEN_INSTALLTYPE: {
+				break;
+			}
+			case SCREEN_EXIT: {
+				goto end;
+			}
+		}
+
+		EndDrawing();
+	}
+
+	end:
 
 	CleanUp();
 

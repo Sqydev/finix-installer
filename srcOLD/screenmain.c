@@ -7,12 +7,12 @@ void DoScreenmain() {
 	static bool inited = false;
 	if(!inited) { DATA.cursorPos = 2; inited = true; }
 
-	int Skip[2] = { 15, 17 };
-	HandleCursor(2, 19, Skip, 2);
+	int Skip[2] = { 14, 16 };
+	HandleCursor(2, 18, Skip, 2);
 
 	if(IsKeyPressed(KEY_ENTER)) {
-		if(DATA.cursorPos == 13) { DATA.currScreen = SCREEN_TIMEZONE; }
-		else if(DATA.cursorPos == 14) { DATA.currScreen = SCREEN_INSTALLTYPE; }
+		if(DATA.cursorPos == 12) { DATA.currScreen = SCREEN_TIMEZONE; }
+		else if(DATA.cursorPos == 13) { DATA.currScreen = SCREEN_INSTALLTYPE; }
 	}
 		
 	DrawText("Welcome to the finix installer", 0, 0, TERMWHITE);
@@ -27,14 +27,13 @@ void DoScreenmain() {
 	DrawTextf("Users:                 %s", 3, 9, TERMWHITE);
 	DrawTextf("Audio:                 %s", 3, 10, TERMWHITE);
 	DrawTextf("Kernels:               %s", 3, 11, TERMWHITE);
-	DrawTextf("Additional pkgs:       %s", 3, 12, TERMWHITE);
-	DrawTextf("Timezone:              %s", 3, 13, TERMWHITE, (DATA.TimeZone.selected) ? DATA.TimeZone.content[DATA.TimeZone.selectedIndex] : "Not selected");
-	DrawTextf("Install type:          %s", 3, 14, TERMWHITE, DATA.InstallTypes.strings[DATA.InstallTypes.selectedIndex]);
+	DrawTextf("Timezone:              %s", 3, 12, TERMWHITE, (DATA.TimeZone.selected) ? DATA.TimeZone.content[DATA.TimeZone.selectedIndex] : "Not selected");
+	DrawTextf("Install type:          %s", 3, 13, TERMWHITE, DATA.InstallTypes.strings[DATA.InstallTypes.selectedIndex]);
 
-	DrawTextf("Premade config:        %s", 3, 16, TERMWHITE);
+	DrawTextf("Premade config:        %s", 3, 15, TERMWHITE);
 
-	DrawText("Install", 3, 18, TERMWHITE);
-	DrawText("Abort", 3, 19, TERMWHITE);
+	DrawText("Install", 3, 17, TERMWHITE);
+	DrawText("Abort", 3, 18, TERMWHITE);
 
 	if(DATA.currScreen != SCREEN_MAIN) { inited = false; }
 }

@@ -77,7 +77,10 @@ char** ExtractDirContents(char* path, size_t* dumpContentCount) {
 
 void SelectFromList(const char* title, const char* const* list, size_t size, size_t* dumpSelectedTo, bool* dumpIsSelected) {
 	static bool inited = false;
-	if(!inited) { DATA.cursorPos = 3; inited = true; }
+	if(!inited) {
+		DATA.cursorPos = 3;
+		inited = true;
+	}
 
 	static int offset = 0;
 
