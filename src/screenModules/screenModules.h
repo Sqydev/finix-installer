@@ -2,7 +2,10 @@
 #define FINIX_INSTALLER_SCREEN_MODULES_H
 
 #include <stddef.h>
+#include <stdbool.h>
 
 char HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize);
+
+void SelectFromConstList(const char* title, const char* const* list, size_t sizeOfList, const char** dumpSelectedTo, bool* dumpIsSelected);
 
 #endif

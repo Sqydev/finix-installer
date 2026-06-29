@@ -3,4 +3,7 @@
 
 void ScreenMain(void);
 
+void ScreenTimezone(void);
+void ScreenInstallType(void);
+
 #endif

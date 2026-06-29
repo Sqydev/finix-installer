@@ -34,9 +34,11 @@ int main(int argc, char** argv) {
 				break;
 			}
 			case SCREEN_TIMEZONE: {
+				ScreenTimezone();
 				break;
 			}
 			case SCREEN_INSTALLTYPE: {
+				ScreenInstallType();
 				break;
 			}
 			case SCREEN_EXIT: {
