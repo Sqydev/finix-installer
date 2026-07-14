@@ -58,7 +58,8 @@ void ScreenMain(void) {
 	HandleCursor(2, 17, Skip, 2);
 
 	if(IsKeyPressed(KEY_ENTER)) {
-		if(DATA.cursorPos == TIMEZONES_IDX) { DATA.screenState = SCREEN_TIMEZONE; }
+		if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
+		else if(DATA.cursorPos == TIMEZONES_IDX) { DATA.screenState = SCREEN_TIMEZONE; }
 		else if(DATA.cursorPos == INSTALLTYPE_IDX) { DATA.screenState = SCREEN_INSTALLTYPE; }
 
 		else if(DATA.cursorPos == ABORT_IDX) { DATA.screenState = SCREEN_EXIT; }

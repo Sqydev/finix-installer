@@ -38,6 +38,10 @@ int main(int argc, char** argv) {
 				ScreenMain();
 				break;
 			}
+			case SCREEN_KERNEL: {
+				ScreenKernelSelect();
+				break;
+			}
 			case SCREEN_TIMEZONE: {
 				ScreenTimezone();
 				break;
