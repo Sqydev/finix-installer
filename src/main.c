@@ -7,6 +7,10 @@
 
 CoreData DATA;
 
+void RedrawSigHandler() {
+	DATA.redraw = true;
+}
+
 void CleanUp(void) {
 	CloseTui();
 }
@@ -18,6 +22,7 @@ int main(int argc, char** argv) {
 	InitTui(20, TUI_DYNAMIC);
 
 	AddSignalTask(SIGINT, CleanUp, -1);
+	AddSignalTask(SIGWINCH, RedrawSigHandler, -1);
 
 	HideCursor();
 

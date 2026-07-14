@@ -13,6 +13,7 @@ typedef enum {
 typedef struct {
 	Screen screenState;
 	int cursorPos;
+	bool redraw;
 
 	struct {
 		const char* selectedString;
