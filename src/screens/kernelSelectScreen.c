@@ -57,5 +57,5 @@ const char* const KernelsList[] = {
 size_t sizeOfKernelsList = sizeof(KernelsList) / sizeof(KernelsList[0]);
 
 void ScreenKernelSelect(void) {
-	SelectFromConstList("Select kernel package to be installed", KernelsList, sizeOfKernelsList, );
+	SelectFromConstListORCustom("Select kernel package to be installed", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected);
 }

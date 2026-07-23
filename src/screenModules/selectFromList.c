@@ -60,7 +60,7 @@ void SelectFromConstList(const char* title, const char* const* list, size_t size
     }
 }
 
-void SelectFromConstListORCustom(const char* title, const char* const* list, size_t sizeOfList, const char** dumpSelectedTo, bool* dumpIsSelected) {
+void SelectFromConstListORCustom(const char* title, const char* const* list, size_t sizeOfList, char** dumpSelectedTo, bool* dumpIsSelected) {
     static bool inited = false;
     static int offset = 0;
 
@@ -98,10 +98,10 @@ void SelectFromConstListORCustom(const char* title, const char* const* list, siz
     DrawText("-------------------------", 4, 3 + shown, TERMWHITE);
 
     if(IsKeyPressed(KEY_ENTER)) {
-        int selected = offset + (DATA.cursorPos - 3);
+        int selected = offset + (DATA.cursorPos - 4);
 
         if(selected >= 0 && selected < (int)sizeOfList) {
-            *dumpSelectedTo = list[selected];
+            *dumpSelectedTo = (char*)list[selected];
 
             if(dumpIsSelected) { *dumpIsSelected = true; }
         }

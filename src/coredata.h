@@ -17,6 +17,10 @@ typedef struct {
 	bool redraw;
 
 	struct {
+		char* string;
+		bool selected;
+	} Kernel;
+	struct {
 		const char* selectedString;
 		bool selected;
 	} Timezone;

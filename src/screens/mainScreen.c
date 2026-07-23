@@ -34,7 +34,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE);
 	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE);
 	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE);
-	DrawTextf("Kernels:               %s", 3, KERNEL_IDX, TERMWHITE);
+	DrawTextf("Kernels:               %s", 3, KERNEL_IDX, TERMWHITE, (DATA.Kernel.selected) ? DATA.Kernel.string : "Not selected");
 	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.selectedString : "Not selected");
 	DrawTextf("Install type:          %s", 3, INSTALLTYPE_IDX, TERMWHITE, (DATA.InstallType.selected) ? DATA.InstallType.selectedString : "Not selected");
 
