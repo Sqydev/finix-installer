@@ -21,11 +21,11 @@ typedef struct {
 		bool selected;
 	} Kernel;
 	struct {
-		const char* selectedString;
+		char* selectedString;
 		bool selected;
 	} Timezone;
 	struct {
-		const char* selectedString;
+		char* selectedString;
 		bool selected;
 	} InstallType;
 } CoreData;

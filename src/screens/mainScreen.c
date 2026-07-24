@@ -53,6 +53,7 @@ void ScreenMain(void) {
 
 		DrawScreenMain();
 	}
+	if(DATA.redraw) { DrawScreenMain(); DATA.redraw = false; }
 
 	int Skip[2] = { 12, 15 };
 	HandleCursor(2, 17, Skip, 2);

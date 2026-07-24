@@ -3,6 +3,7 @@
 #include "../screenModules/screenModules.h"
 
 const char* const KernelsList[] = {
+    "Custom: ",
     "pkgs.linuxPackages",
     "pkgs.linuxPackages_5_10",
     "pkgs.linuxPackages_5_10_hardened",
@@ -57,5 +58,6 @@ const char* const KernelsList[] = {
 size_t sizeOfKernelsList = sizeof(KernelsList) / sizeof(KernelsList[0]);
 
 void ScreenKernelSelect(void) {
-	SelectFromConstListORCustom("Select kernel package to be installed", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected);
+	SelectFromConstList("Select kernel package to be installed", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected);
+	if(DATA.Kernel.string == KernelsList[0]) { GetStringFromUser("Type", &DATA.Kernel.string, &DATA.Kernel.selected); }
 }
