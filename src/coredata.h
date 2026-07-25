@@ -2,6 +2,7 @@
 #define FINIX_INSTALLER_COREDATA_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef enum {
 	SCREEN_EXIT,
@@ -19,6 +20,7 @@ typedef struct {
 	struct {
 		char* string;
 		bool selected;
+		size_t stringSizeOf;
 	} Kernel;
 	struct {
 		char* selectedString;

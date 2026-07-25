@@ -1,6 +1,7 @@
 #include "../coredata.h"
 
 #include "../screenModules/screenModules.h"
+#include <string.h>
 
 const char* const KernelsList[] = {
     "Custom: ",
@@ -59,5 +60,8 @@ size_t sizeOfKernelsList = sizeof(KernelsList) / sizeof(KernelsList[0]);
 
 void ScreenKernelSelect(void) {
 	SelectFromConstList("Select kernel package to be installed", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected);
-	if(DATA.Kernel.string == KernelsList[0]) { GetStringFromUser("Type", &DATA.Kernel.string, &DATA.Kernel.selected); }
+	if(DATA.Kernel.selected) { DATA.Kernel.stringSizeOf = strlen(DATA.Kernel.string); }
+	if(DATA.Kernel.string == KernelsList[0]) {
+		DATA.Kernel.string = GetStringFromUser("Type", &DATA.Kernel.stringSizeOf, &DATA.Kernel.selected);
+	}
 }

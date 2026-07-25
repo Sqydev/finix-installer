@@ -1,3 +1,7 @@
+#include "../../libs/esclib.h"
+
+#include "../coredata.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -6,28 +10,50 @@
 #include <unistd.h>
 #include <termios.h>
 
-void GetStringFromUser(const char* title, char** dumpStringTo, bool* dumpIsStringDone) {
-	(void)title;
+char* GetStringFromUser(const char* title, size_t* dumpSizeOfTo, bool* dumpIsDoneTo) {
+	BeginDrawing();
+	ClearTui(TERMBLACK, TERMWHITE);
 
-	if(!dumpStringTo) { return; }
+	DrawTextf(title, 0, 0, TERMWHITE);
 
-	int defaultTermFlags = fcntl(STDIN_FILENO, F_GETFL);
-    fcntl(STDIN_FILENO, F_SETFL, defaultTermFlags & ~O_NONBLOCK);
-	struct termios tty;
-    tcgetattr(STDIN_FILENO, &tty);
-    tty.c_lflag |= ECHO;
-    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+	EndDrawing();
 
-	*dumpIsStringDone = false;
-	
-	if(*dumpStringTo != NULL) { free(*dumpStringTo); *dumpStringTo = NULL; }
+	char* tring = NULL;
+	*dumpSizeOfTo = 0;
 
-	scanf("%s", *dumpStringTo);
+	int previousTermFlags = fcntl(STDIN_FILENO, F_GETFL);
+	fcntl(STDIN_FILENO, F_SETFL, previousTermFlags & ~O_NONBLOCK);
 
-	*dumpIsStringDone = true;
+	struct termios oldTty, tty;
+	tcgetattr(STDIN_FILENO, &oldTty);
+	tty = oldTty;
 
-    tcgetattr(STDIN_FILENO, &tty);
-    tty.c_lflag &= ~ECHO;
-    tcsetattr(STDIN_FILENO, TCSANOW, &tty);
-    fcntl(STDIN_FILENO, F_SETFL, defaultTermFlags | O_NONBLOCK);
+	tty.c_lflag |= (ECHO | ICANON | ISIG);
+	tty.c_iflag |= ICRNL;
+	tty.c_cc[VMIN]  = 1;
+	tty.c_cc[VTIME] = 0;
+	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+	tcflush(STDIN_FILENO, TCIFLUSH);
+
+	ssize_t len = getline(&tring, dumpSizeOfTo, stdin);
+	if(len == -1) {
+		free(tring);
+		*dumpIsDoneTo = false;
+		tcsetattr(STDIN_FILENO, TCSANOW, &oldTty);
+		fcntl(STDIN_FILENO, F_SETFL, previousTermFlags);
+		return NULL;
+	}
+	if(len > 0 && tring[len - 1] == '\n') {
+		tring[len - 1] = '\0';
+	}
+
+	tcsetattr(STDIN_FILENO, TCSANOW, &oldTty);
+	fcntl(STDIN_FILENO, F_SETFL, previousTermFlags);
+
+	*dumpIsDoneTo = true;
+	DATA.redraw = true;
+
+	BeginDrawing();
+	ClearTui(TERMBLACK, TERMWHITE);
+	return tring;
 }
