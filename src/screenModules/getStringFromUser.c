@@ -7,53 +7,47 @@
 #include <stdbool.h>
 
 #include <fcntl.h>
+#include <string.h>
 #include <unistd.h>
 #include <termios.h>
 
-char* GetStringFromUser(const char* title, size_t* dumpSizeOfTo, bool* dumpIsDoneTo) {
-	BeginDrawing();
-	ClearTui(TERMBLACK, TERMWHITE);
+char* GetStringFromUser(const char* title, Vector2i currPos, size_t* dumpSizeOfTo, bool* dumpIsDoneTo) {
+	(void)title;
+	(void)dumpIsDoneTo;
+	(void)dumpSizeOfTo;
 
-	DrawTextf(title, 0, 0, TERMWHITE);
+	ShowCursor();
+	SetCursorPositionV(currPos);
 
-	EndDrawing();
+	char ch = -1;
+	
+	char* tring = malloc(64 * sizeof(char));
+	tring[0] = '\0';
 
-	char* tring = NULL;
-	*dumpSizeOfTo = 0;
+	size_t tringIdx = 0;
+	size_t tringCap = 64;
 
-	int previousTermFlags = fcntl(STDIN_FILENO, F_GETFL);
-	fcntl(STDIN_FILENO, F_SETFL, previousTermFlags & ~O_NONBLOCK);
+	(void)tringCap;
 
-	struct termios oldTty, tty;
-	tcgetattr(STDIN_FILENO, &oldTty);
-	tty = oldTty;
+	Vector2i tringPos = currPos;
+	
+	while(1) {
+		BeginDrawing();
+		
+		if(read(STDIN_FILENO, &ch, 1) == 1) {
+			//if(ch == '\n') { break; } // REMAMBER, \n is different in raw mode. fix FIX:
+			//if(ch == '\033') {  } // Mmmm, ESC. ESC lib :) TODO:
 
-	tty.c_lflag |= (ECHO | ICANON | ISIG);
-	tty.c_iflag |= ICRNL;
-	tty.c_cc[VMIN]  = 1;
-	tty.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &tty);
-	tcflush(STDIN_FILENO, TCIFLUSH);
+			tring[tringIdx++] = ch;
+			tring[tringIdx] = '\0';
+		}
 
-	ssize_t len = getline(&tring, dumpSizeOfTo, stdin);
-	if(len == -1) {
-		free(tring);
-		*dumpIsDoneTo = false;
-		tcsetattr(STDIN_FILENO, TCSANOW, &oldTty);
-		fcntl(STDIN_FILENO, F_SETFL, previousTermFlags);
-		return NULL;
+		DrawTextV(tring, tringPos, TERMWHITE);
+		if(ch == 'q') { exit(0); }
+
+		EndDrawing();
 	}
-	if(len > 0 && tring[len - 1] == '\n') {
-		tring[len - 1] = '\0';
-	}
-
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldTty);
-	fcntl(STDIN_FILENO, F_SETFL, previousTermFlags);
-
-	*dumpIsDoneTo = true;
-	DATA.redraw = true;
-
 	BeginDrawing();
-	ClearTui(TERMBLACK, TERMWHITE);
+
 	return tring;
 }

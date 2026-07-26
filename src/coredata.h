@@ -21,6 +21,7 @@ typedef struct {
 		char* string;
 		bool selected;
 		size_t stringSizeOf;
+		bool custom;
 	} Kernel;
 	struct {
 		char* selectedString;
