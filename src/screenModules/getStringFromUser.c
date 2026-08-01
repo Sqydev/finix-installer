@@ -35,8 +35,8 @@ char* GetStringFromUser(const char* title, Vector2i currPos, size_t* dumpSizeOfT
 		BeginDrawing();
 		
 		if(read(STDIN_FILENO, &ch, 1) == 1) {
-			//if(ch == '\n') { break; } // REMAMBER, \n is different in raw mode. fix FIX:
-			//if(ch == '\033') {  } // Mmmm, ESC. ESC lib :) TODO:
+			//if(ch == '\n') { break; }
+			//if(ch == '\033') {  }
 
 			tring[tringIdx++] = ch;
 			tring[tringIdx] = '\0';

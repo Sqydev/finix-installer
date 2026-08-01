@@ -16,6 +16,7 @@ typedef struct {
 	Screen screenState;
 	int cursorPos;
 	bool redraw;
+	char gotCh;
 
 	struct {
 		char* string;
