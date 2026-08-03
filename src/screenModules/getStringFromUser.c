@@ -20,6 +20,7 @@ char* GetStringFromUser(Vector2i currPos) {
 	EndDrawing();
 
 	char* tring = malloc(TRING_INITSIZE * sizeof(char));
+	tring[0] = '\0';
 
 	size_t tringIdx = 0;
 	size_t tringCap = 64;
@@ -31,8 +32,8 @@ char* GetStringFromUser(Vector2i currPos) {
 
 		EscKey gotKey = WaitForKeyPress();
 		if(gotKey != KEY_NULL) {
+			if(gotKey == KEY_ESCAPE && tringIdx == 0) { free(tring); tring = NULL; break; }
 			if(gotKey == KEY_ENTER) { break; }
-			if(gotKey == KEY_ESCAPE) { free(tring); tring = NULL; break; }
 
 			if(tringCap >= tringIdx) {
 				tring = realloc(tring, (tringCap + 1) * sizeof(char));

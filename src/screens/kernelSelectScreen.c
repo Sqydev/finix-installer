@@ -5,7 +5,6 @@
 #include <string.h>
 
 const char* const KernelsList[] = {
-    "Custom: ",
     "pkgs.linuxPackages",
     "pkgs.linuxPackages_5_10",
     "pkgs.linuxPackages_5_10_hardened",
@@ -60,24 +59,5 @@ const char* const KernelsList[] = {
 size_t sizeOfKernelsList = sizeof(KernelsList) / sizeof(KernelsList[0]);
 
 void ScreenKernelSelect(void) {
-	SelectFromConstList("Select kernel package to be installed", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected);
-	if(DATA.Kernel.selected) { DATA.Kernel.stringSizeOf = strlen(DATA.Kernel.string); }
-	if(DATA.Kernel.string == KernelsList[0]) {
-		char* tring = GetStringFromUser((Vector2i){ 4 + strlen(KernelsList[0]), 3 });
-		
-		if(!tring) {
-			if(DATA.Kernel.string == KernelsList[0]) {
-				DATA.Kernel.string = NULL;
-				DATA.Kernel.selected = false;
-				DATA.Kernel.stringSizeOf = 0;
-				DATA.Kernel.custom = false;
-			}
-			return;
-		}
-
-		if(DATA.Kernel.custom && DATA.Kernel.string && DATA.Kernel.selected) { free(DATA.Kernel.string); }
-		DATA.Kernel.string = tring;
-		DATA.Kernel.selected = true;
-		DATA.Kernel.stringSizeOf = strlen(DATA.Kernel.string);
-	}
+	SelectFromConstListOrCustom("Select kernel package to be installed", "Custom: ", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected, &DATA.Kernel.stringSizeOf, &DATA.Kernel.custom);
 }
