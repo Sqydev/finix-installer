@@ -3,7 +3,7 @@
 #include "../coredata.h"
 
 char HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize) {
-	if(IsKeyPressed(KEY_W)) {
+	if(IsKeyPressed(KEY_UP)) {
 		DrawChar(" ", 1, DATA.cursorPos, TERMWHITE);
 		DATA.cursorPos--;
 
@@ -17,7 +17,7 @@ char HandleCursor(int lowestPos, int maxPos, const int* skip, size_t skipSize) {
 			return 1;
 		}
 	}
-	if(IsKeyPressed(KEY_S)) {
+	if(IsKeyPressed(KEY_DOWN)) {
 		DrawChar(" ", 1, DATA.cursorPos, TERMWHITE);
 		DATA.cursorPos++;
 

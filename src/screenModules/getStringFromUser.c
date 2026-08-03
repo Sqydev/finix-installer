@@ -11,43 +11,51 @@
 #include <unistd.h>
 #include <termios.h>
 
-char* GetStringFromUser(const char* title, Vector2i currPos, size_t* dumpSizeOfTo, bool* dumpIsDoneTo) {
-	(void)title;
-	(void)dumpIsDoneTo;
-	(void)dumpSizeOfTo;
+#define TRING_INITSIZE 64
 
+char* GetStringFromUser(Vector2i currPos) {
 	ShowCursor();
 	SetCursorPositionV(currPos);
 
-	char ch = -1;
-	
-	char* tring = malloc(64 * sizeof(char));
-	tring[0] = '\0';
+	EndDrawing();
+
+	char* tring = malloc(TRING_INITSIZE * sizeof(char));
 
 	size_t tringIdx = 0;
 	size_t tringCap = 64;
-
-	(void)tringCap;
 
 	Vector2i tringPos = currPos;
 	
 	while(1) {
 		BeginDrawing();
-		
-		if(read(STDIN_FILENO, &ch, 1) == 1) {
-			//if(ch == '\n') { break; }
-			//if(ch == '\033') {  }
 
-			tring[tringIdx++] = ch;
+		EscKey gotKey = WaitForKeyPress();
+		if(gotKey != KEY_NULL) {
+			if(gotKey == KEY_ENTER) { break; }
+			if(gotKey == KEY_ESCAPE) { free(tring); tring = NULL; break; }
+
+			if(tringCap >= tringIdx) {
+				tring = realloc(tring, (tringCap + 1) * sizeof(char));
+				if(!tring) { break; }
+
+				tringCap++;
+			}
+
+			tring[tringIdx++] = gotKey;
 			tring[tringIdx] = '\0';
+
+			currPos.x++;
 		}
 
+		SetCursorPositionV(currPos);
+		
 		DrawTextV(tring, tringPos, TERMWHITE);
-		if(ch == 'q') { exit(0); }
 
 		EndDrawing();
 	}
 	BeginDrawing();
+
+	HideCursor();
 
 	return tring;
 }

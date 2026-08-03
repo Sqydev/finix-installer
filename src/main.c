@@ -4,6 +4,7 @@
 #include "./coredata.h"
 
 #include <signal.h>
+#include <stdlib.h>
 
 CoreData DATA;
 
@@ -12,6 +13,8 @@ void RedrawSigHandler() {
 }
 
 void CleanUp(void) {
+	if(DATA.Kernel.custom && DATA.Kernel.string && DATA.Kernel.selected) { free(DATA.Kernel.string); }
+
 	CloseTui();
 }
 
@@ -27,9 +30,18 @@ int main(int argc, char** argv) {
 	HideCursor();
 
 	DATA.screenState = SCREEN_MAIN;
+
+	DATA.Kernel.custom = false;
+	DATA.Kernel.selected = false;
+	DATA.Kernel.stringSizeOf = 0;
+	DATA.Kernel.string = NULL;
+
 	DATA.Timezone.selected = false;
 	DATA.Timezone.selectedString = NULL;
 
+	DATA.InstallType.selected = false;
+	DATA.InstallType.selectedString = NULL;
+	
 	for(;;) {
 		BeginDrawing();
 
