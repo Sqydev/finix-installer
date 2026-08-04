@@ -606,5 +606,5 @@ const char* const TimezonesList[] = {
 size_t sizeOfTimezonesList = sizeof(TimezonesList) / sizeof(TimezonesList[0]);
 
 void ScreenTimezone(void) {
-	SelectFromConstList("Select timezone", TimezonesList, sizeOfTimezonesList, &DATA.Timezone.selectedString, &DATA.Timezone.selected);
+	SelectFromList("Select timezone", "Custom: ", TimezonesList, sizeOfTimezonesList, &DATA.Timezone.string, &DATA.Timezone.selected, &DATA.Timezone.stringSizeOf, &DATA.Timezone.custom);
 }

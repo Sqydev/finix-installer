@@ -31,13 +31,22 @@ int main(int argc, char** argv) {
 
 	DATA.screenState = SCREEN_MAIN;
 
+	DATA.Hostname.selected = false;
+	DATA.Hostname.stringSizeOf = 0;
+	DATA.Hostname.string = NULL;
+
+	DATA.Audio.selected = false;
+	DATA.Audio.selectedString = NULL;
+
 	DATA.Kernel.custom = false;
 	DATA.Kernel.selected = false;
 	DATA.Kernel.stringSizeOf = 0;
 	DATA.Kernel.string = NULL;
 
+	DATA.Timezone.custom = false;
 	DATA.Timezone.selected = false;
-	DATA.Timezone.selectedString = NULL;
+	DATA.Timezone.stringSizeOf = 0;
+	DATA.Timezone.string = NULL;
 
 	DATA.InstallType.selected = false;
 	DATA.InstallType.selectedString = NULL;
@@ -48,6 +57,14 @@ int main(int argc, char** argv) {
 		switch(DATA.screenState) {
 			case SCREEN_MAIN: {
 				ScreenMain();
+				break;
+			}
+			case SCREEN_HOSTNAME: {
+				ScreenHostnameSelect();
+				break;
+			}
+			case SCREEN_AUDIO: {
+				ScreenAudioSelect();
 				break;
 			}
 			case SCREEN_KERNEL: {

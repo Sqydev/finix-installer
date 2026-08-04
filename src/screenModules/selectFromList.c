@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void SelectFromConstList(const char* title, const char* const* list, size_t sizeOfList, char** dumpSelectedTo, bool* dumpIsSelected) {
+void SelectFromListOnly(const char* title, const char* const* list, size_t sizeOfList, char** dumpSelectedTo, bool* dumpIsSelected) {
 	static bool inited = false;
 	static int offset = 0;
 
@@ -62,7 +62,7 @@ void SelectFromConstList(const char* title, const char* const* list, size_t size
 	}
 }
 
-void SelectFromConstListOrCustom(const char* title, const char* customPrompt, const char* const* list, size_t sizeOfList, char** dumpSelectedTo, bool* dumpIsSelected, size_t* dumpSizeOfTo, bool* dumpIsCustomTo) {
+void SelectFromList(const char* title, const char* customPrompt, const char* const* list, size_t sizeOfList, char** dumpSelectedTo, bool* dumpIsSelected, size_t* dumpSizeOfTo, bool* dumpIsCustomTo) {
 	static bool inited = false;
 	static int offset = 0;
 
@@ -119,6 +119,9 @@ void SelectFromConstListOrCustom(const char* title, const char* customPrompt, co
 			char* tring = GetStringFromUser((Vector2i){ 4 + strlen(customPrompt), 3 });
 		
 			if(!tring) {
+				offset = 0;
+				inited = false;
+				DATA.screenState = SCREEN_MAIN;
 				return;
 			}
 

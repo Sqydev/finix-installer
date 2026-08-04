@@ -3,6 +3,8 @@
 
 void ScreenMain(void);
 
+void ScreenHostnameSelect(void);
+void ScreenAudioSelect(void);
 void ScreenKernelSelect(void);
 void ScreenTimezone(void);
 void ScreenInstallType(void);

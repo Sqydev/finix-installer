@@ -33,9 +33,9 @@ void DrawScreenMain(void) {
 	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE);
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE);
 	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE);
-	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE);
+	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE, (DATA.Audio.selected) ? DATA.Audio.selectedString : "Not selected");
 	DrawTextf("Kernels:               %s", 3, KERNEL_IDX, TERMWHITE, (DATA.Kernel.selected) ? DATA.Kernel.string : "Not selected");
-	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.selectedString : "Not selected");
+	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.string : "Not selected");
 	DrawTextf("Install type:          %s", 3, INSTALLTYPE_IDX, TERMWHITE, (DATA.InstallType.selected) ? DATA.InstallType.selectedString : "Not selected");
 
 	DrawTextf("Premade config:        %s", 3, PREMADECNF_IDX, TERMWHITE);
@@ -59,7 +59,9 @@ void ScreenMain(void) {
 	HandleCursor(2, 17, Skip, 2);
 
 	if(IsKeyPressed(KEY_ENTER)) {
-		if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
+		if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
+		else if(DATA.cursorPos == AUDIO_IDX) { DATA.screenState = SCREEN_AUDIO; }
+		else if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
 		else if(DATA.cursorPos == TIMEZONES_IDX) { DATA.screenState = SCREEN_TIMEZONE; }
 		else if(DATA.cursorPos == INSTALLTYPE_IDX) { DATA.screenState = SCREEN_INSTALLTYPE; }
 

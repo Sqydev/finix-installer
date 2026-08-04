@@ -10,5 +10,5 @@ const char* const InstallTypeList[] = {
 size_t sizeOfInstallTypeList = sizeof(InstallTypeList) / sizeof(InstallTypeList[0]);
 
 void ScreenInstallType(void) {
-	SelectFromConstList("Select instalation type", InstallTypeList, sizeOfInstallTypeList, &DATA.InstallType.selectedString, &DATA.InstallType.selected);
+	SelectFromListOnly("Select instalation type", InstallTypeList, sizeOfInstallTypeList, &DATA.InstallType.selectedString, &DATA.InstallType.selected);
 }
