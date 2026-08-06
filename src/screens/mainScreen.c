@@ -17,11 +17,8 @@
 #define TIMEZONES_IDX 10
 #define INSTALLTYPE_IDX 11
 
-#define PREMADECNF_IDX 13
-#define EDIT_IDX 14
-
-#define INSTALL_IDX 16
-#define ABORT_IDX 17
+#define CONTINUE_IDX 13
+#define ABORT_IDX 14
 
 void DrawScreenMain(void) {
 	ClearTui(TERMBLACK, TERMWHITE);
@@ -38,10 +35,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.string : "Not selected");
 	DrawTextf("Install type:          %s", 3, INSTALLTYPE_IDX, TERMWHITE, (DATA.InstallType.selected) ? DATA.InstallType.selectedString : "Not selected");
 
-	DrawTextf("Premade config:        %s", 3, PREMADECNF_IDX, TERMWHITE);
-	DrawTextf("Edit config:           %s", 3, EDIT_IDX, TERMWHITE);
-
-	DrawText("Install", 3, INSTALL_IDX, TERMWHITE);
+	DrawText("Continue", 3, CONTINUE_IDX, TERMWHITE);
 	DrawText("Abort", 3, ABORT_IDX, TERMWHITE);
 }
 
@@ -55,8 +49,8 @@ void ScreenMain(void) {
 	}
 	if(DATA.redraw) { DrawScreenMain(); DATA.redraw = false; }
 
-	int Skip[2] = { 12, 15 };
-	HandleCursor(2, 17, Skip, 2);
+	int Skip[1] = { 12 };
+	HandleCursor(2, 14, Skip, 1);
 
 	if(IsKeyPressed(KEY_ENTER)) {
 		if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
