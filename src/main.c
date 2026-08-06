@@ -15,6 +15,10 @@ void RedrawSigHandler() {
 void CleanUp(void) {
 	if(DATA.Kernel.custom && DATA.Kernel.string && DATA.Kernel.selected) { free(DATA.Kernel.string); }
 
+	if(DATA.Timezone.custom && DATA.Timezone.string && DATA.Timezone.selected) { free(DATA.Timezone.string); }
+
+	if(DATA.Hostname.string && DATA.Hostname.selected) { free(DATA.Hostname.string); }
+
 	CloseTui();
 }
 

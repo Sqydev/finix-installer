@@ -116,7 +116,8 @@ void SelectFromList(const char* title, const char* customPrompt, const char* con
 		int selected = offset + (DATA.cursorPos - 3);
 
 		if(selected == 0) {
-			char* tring = GetStringFromUser((Vector2i){ 4 + strlen(customPrompt), 3 });
+			int currentCursorRow = DATA.cursorPos;
+			char* tring = GetStringFromUser((Vector2i){ 4 + strlen(customPrompt), currentCursorRow });
 		
 			if(!tring) {
 				offset = 0;
@@ -125,9 +126,11 @@ void SelectFromList(const char* title, const char* customPrompt, const char* con
 				return;
 			}
 
-			if(*dumpIsCustomTo && *dumpSelectedTo && *dumpIsSelected) { free(*dumpSelectedTo); }
+			if(*dumpIsCustomTo && *dumpSelectedTo) { 
+				free(*dumpSelectedTo); 
+				*dumpSelectedTo = NULL;
+			}
 			*dumpSelectedTo = tring;
-			*dumpIsSelected = true;
 			*dumpIsCustomTo = true;
 		}
 		else {

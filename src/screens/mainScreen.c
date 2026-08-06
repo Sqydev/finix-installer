@@ -27,7 +27,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Locales:               %s", 3, LOCALES_IDX, TERMWHITE);
 	DrawTextf("Partitions:            %s", 3, PARTITIONS_IDX, TERMWHITE);
 	DrawTextf("Swap:                  %s", 3, SWAP_IDX, TERMWHITE);
-	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE);
+	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE, (DATA.Hostname.selected) ? DATA.Hostname.string : "Not selected");
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE);
 	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE);
 	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE, (DATA.Audio.selected) ? DATA.Audio.selectedString : "Not selected");

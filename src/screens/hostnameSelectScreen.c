@@ -18,4 +18,6 @@ void ScreenHostnameSelect(void) {
 	DATA.Hostname.stringSizeOf = strlen(tring);
 	DATA.Hostname.string = tring;
 	DATA.Hostname.selected = true;
+
+	DATA.screenState = SCREEN_MAIN;
 }
