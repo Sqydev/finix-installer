@@ -28,7 +28,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Partitions:            %s", 3, PARTITIONS_IDX, TERMWHITE);
 	DrawTextf("Swap:                  %s", 3, SWAP_IDX, TERMWHITE);
 	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE, (DATA.Hostname.selected) ? DATA.Hostname.string : "Not selected");
-	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE);
+	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE, (DATA.RootPasswd.selected) ? DATA.RootPasswd.string : "Not selected");
 	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE);
 	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE, (DATA.Audio.selected) ? DATA.Audio.selectedString : "Not selected");
 	DrawTextf("Kernels:               %s", 3, KERNEL_IDX, TERMWHITE, (DATA.Kernel.selected) ? DATA.Kernel.string : "Not selected");
@@ -54,6 +54,7 @@ void ScreenMain(void) {
 
 	if(IsKeyPressed(KEY_ENTER)) {
 		if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
+		else if(DATA.cursorPos == ROOTPASSWD_IDX) { DATA.screenState = SCREEN_ROOTPASSWD; }
 		else if(DATA.cursorPos == AUDIO_IDX) { DATA.screenState = SCREEN_AUDIO; }
 		else if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
 		else if(DATA.cursorPos == TIMEZONES_IDX) { DATA.screenState = SCREEN_TIMEZONE; }

@@ -32,7 +32,7 @@ char* GetStringFromUser(Vector2i currPos) {
 
 		EscKey gotKey = WaitForKeyPress();
 		if(gotKey != KEY_NULL) {
-			if(gotKey == KEY_ENTER) { if(tringIdx == 0) { free(tring); tring = NULL; } break; }
+			if(gotKey == KEY_ENTER) { break; }
 			if(gotKey == KEY_ESCAPE) { free(tring); tring = NULL; break; }
 
 			if(tringCap >= tringIdx) {

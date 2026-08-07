@@ -39,6 +39,10 @@ int main(int argc, char** argv) {
 	DATA.Hostname.stringSizeOf = 0;
 	DATA.Hostname.string = NULL;
 
+	DATA.RootPasswd.selected = false;
+	DATA.RootPasswd.stringSizeOf = 0;
+	DATA.RootPasswd.string = NULL;
+
 	DATA.Audio.selected = false;
 	DATA.Audio.selectedString = NULL;
 
@@ -65,6 +69,10 @@ int main(int argc, char** argv) {
 			}
 			case SCREEN_HOSTNAME: {
 				ScreenHostnameSelect();
+				break;
+			}
+			case SCREEN_ROOTPASSWD: {
+				ScreenRootPasswdSelect();
 				break;
 			}
 			case SCREEN_AUDIO: {

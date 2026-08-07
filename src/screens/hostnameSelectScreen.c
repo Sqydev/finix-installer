@@ -6,9 +6,21 @@
 #include <string.h>
 
 void ScreenHostnameSelect(void) {
-	char* tring = GetStringFromUser((Vector2i){ GetCursorPos().x, GetCursorPos().y + strlen("Hostname:              ") });	
+	DrawLineEx(" ", strlen("   Hostname:              "), 5, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
 
-	if(!tring) { return; }
+	char* tring = GetStringFromUser((Vector2i){ strlen("   Hostname:              "), 5 });	
+
+	if(!tring) { DATA.screenState = SCREEN_MAIN; return; }
+	if(tring[0] == '\0') {
+		free(tring);
+
+		DATA.Hostname.selected = false;
+		DATA.Hostname.stringSizeOf = 0;
+		DATA.Hostname.string = NULL;
+		DATA.screenState = SCREEN_MAIN;
+
+		return;
+	}
 
 	if(DATA.Hostname.string) {
 		free(DATA.Hostname.string);

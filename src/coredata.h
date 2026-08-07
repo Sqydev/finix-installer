@@ -8,6 +8,7 @@ typedef enum {
 	SCREEN_EXIT,
 	SCREEN_MAIN,
 	SCREEN_HOSTNAME,
+	SCREEN_ROOTPASSWD,
 	SCREEN_AUDIO,
 	SCREEN_KERNEL,
 	SCREEN_TIMEZONE,
@@ -25,6 +26,11 @@ typedef struct {
 		bool selected;
 		size_t stringSizeOf;
 	} Hostname;
+	struct {
+		char* string;
+		bool selected;
+		size_t stringSizeOf;
+	} RootPasswd;
 	struct {
 		char* selectedString;
 		bool selected;

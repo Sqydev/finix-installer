@@ -4,6 +4,7 @@
 void ScreenMain(void);
 
 void ScreenHostnameSelect(void);
+void ScreenRootPasswdSelect(void);
 void ScreenAudioSelect(void);
 void ScreenKernelSelect(void);
 void ScreenTimezone(void);

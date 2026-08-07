@@ -120,8 +120,6 @@ void SelectFromList(const char* title, const char* customPrompt, const char* con
 			char* tring = GetStringFromUser((Vector2i){ 4 + strlen(customPrompt), currentCursorRow });
 		
 			if(!tring) {
-				offset = 0;
-				inited = false;
 				DATA.screenState = SCREEN_MAIN;
 				return;
 			}
@@ -130,6 +128,23 @@ void SelectFromList(const char* title, const char* customPrompt, const char* con
 				free(*dumpSelectedTo); 
 				*dumpSelectedTo = NULL;
 			}
+
+			if(tring[0] == '\0') {
+				offset = 0;
+				inited = false;
+				DATA.screenState = SCREEN_MAIN;
+
+				free(tring);
+
+				*dumpIsCustomTo = false;
+				*dumpIsSelected = false;
+				*dumpSizeOfTo = 0;
+				*dumpSelectedTo = NULL;
+
+				return;
+			}
+
+
 			*dumpSelectedTo = tring;
 			*dumpIsCustomTo = true;
 		}
