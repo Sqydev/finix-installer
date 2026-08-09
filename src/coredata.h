@@ -7,6 +7,7 @@
 typedef enum {
 	SCREEN_EXIT,
 	SCREEN_MAIN,
+	SCREEN_LOCALE,
 	SCREEN_HOSTNAME,
 	SCREEN_ROOTPASSWD,
 	SCREEN_AUDIO,
@@ -21,6 +22,12 @@ typedef struct {
 	bool redraw;
 	char gotCh;
 
+	struct {
+		char* string;
+		bool selected;
+		size_t stringSizeOf;
+		bool custom;
+	} Locale;
 	struct {
 		char* string;
 		bool selected;

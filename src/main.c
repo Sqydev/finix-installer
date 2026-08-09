@@ -13,11 +13,13 @@ void RedrawSigHandler() {
 }
 
 void CleanUp(void) {
+	if(DATA.Locale.custom && DATA.Locale.string && DATA.Locale.selected) { free(DATA.Locale.string); }
+
+	if(DATA.Hostname.string && DATA.Hostname.selected) { free(DATA.Hostname.string); }
+
 	if(DATA.Kernel.custom && DATA.Kernel.string && DATA.Kernel.selected) { free(DATA.Kernel.string); }
 
 	if(DATA.Timezone.custom && DATA.Timezone.string && DATA.Timezone.selected) { free(DATA.Timezone.string); }
-
-	if(DATA.Hostname.string && DATA.Hostname.selected) { free(DATA.Hostname.string); }
 
 	CloseTui();
 }
@@ -34,6 +36,11 @@ int main(int argc, char** argv) {
 	HideCursor();
 
 	DATA.screenState = SCREEN_MAIN;
+
+	DATA.Locale.custom = false;
+	DATA.Locale.selected = false;
+	DATA.Locale.stringSizeOf = 0;
+	DATA.Locale.string = NULL;
 
 	DATA.Hostname.selected = false;
 	DATA.Hostname.stringSizeOf = 0;
@@ -65,6 +72,10 @@ int main(int argc, char** argv) {
 		switch(DATA.screenState) {
 			case SCREEN_MAIN: {
 				ScreenMain();
+				break;
+			}
+			case SCREEN_LOCALE: {
+				ScreenLocaleSelect();
 				break;
 			}
 			case SCREEN_HOSTNAME: {

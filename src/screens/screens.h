@@ -3,6 +3,7 @@
 
 void ScreenMain(void);
 
+void ScreenLocaleSelect(void);
 void ScreenHostnameSelect(void);
 void ScreenRootPasswdSelect(void);
 void ScreenAudioSelect(void);

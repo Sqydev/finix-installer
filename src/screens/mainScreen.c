@@ -24,8 +24,8 @@ void DrawScreenMain(void) {
 	ClearTui(TERMBLACK, TERMWHITE);
 	DrawText("Welcome to the finix installer", 0, GREET_IDX, TERMWHITE);
 
-	DrawTextf("Locales:               %s", 3, LOCALES_IDX, TERMWHITE);
-	DrawTextf("Partitions:            %s", 3, PARTITIONS_IDX, TERMWHITE);
+	DrawTextf("Locales:               %s", 3, LOCALES_IDX, TERMWHITE, (DATA.Locale.selected) ? DATA.Locale.string : "Not selected");
+	DrawTextf("Partitioning:          %s", 3, PARTITIONS_IDX, TERMWHITE);
 	DrawTextf("Swap:                  %s", 3, SWAP_IDX, TERMWHITE);
 	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE, (DATA.Hostname.selected) ? DATA.Hostname.string : "Not selected");
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE, (DATA.RootPasswd.selected) ? DATA.RootPasswd.string : "Not selected");
@@ -53,7 +53,8 @@ void ScreenMain(void) {
 	HandleCursor(2, 14, Skip, 1);
 
 	if(IsKeyPressed(KEY_ENTER)) {
-		if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
+		if(DATA.cursorPos == LOCALES_IDX) { DATA.screenState = SCREEN_LOCALE; }
+		else if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
 		else if(DATA.cursorPos == ROOTPASSWD_IDX) { DATA.screenState = SCREEN_ROOTPASSWD; }
 		else if(DATA.cursorPos == AUDIO_IDX) { DATA.screenState = SCREEN_AUDIO; }
 		else if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
