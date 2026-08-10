@@ -42,6 +42,9 @@ int main(int argc, char** argv) {
 	DATA.Locale.stringSizeOf = 0;
 	DATA.Locale.string = NULL;
 
+	DATA.Swap.selected = false;
+	DATA.Swap.selectedString = NULL;
+
 	DATA.Hostname.selected = false;
 	DATA.Hostname.stringSizeOf = 0;
 	DATA.Hostname.string = NULL;
@@ -65,9 +68,26 @@ int main(int argc, char** argv) {
 
 	DATA.InstallType.selected = false;
 	DATA.InstallType.selectedString = NULL;
-	
+
+	DATA.selectedCheckList[0] = &DATA.Locale.selected;
+	DATA.selectedCheckList[1] = &DATA.Swap.selected;
+	DATA.selectedCheckList[2] = &DATA.Hostname.selected;
+	DATA.selectedCheckList[3] = &DATA.RootPasswd.selected;
+	DATA.selectedCheckList[4] = &DATA.Audio.selected;
+	DATA.selectedCheckList[5] = &DATA.Kernel.selected;
+	DATA.selectedCheckList[6] = &DATA.Timezone.selected;
+	DATA.selectedCheckList[7] = &DATA.InstallType.selected;
+
 	for(;;) {
 		BeginDrawing();
+
+		DATA.allOptionsSelected = true;
+		for(int i = 0; i < selCheckListSize; i++) {
+			if(!*DATA.selectedCheckList[i]) {
+				DATA.allOptionsSelected = false;
+				break;
+			}
+		}
 
 		switch(DATA.screenState) {
 			case SCREEN_MAIN: {
@@ -76,6 +96,10 @@ int main(int argc, char** argv) {
 			}
 			case SCREEN_LOCALE: {
 				ScreenLocaleSelect();
+				break;
+			}
+			case SCREEN_SWAP: {
+				ScreenSwapSelect();
 				break;
 			}
 			case SCREEN_HOSTNAME: {

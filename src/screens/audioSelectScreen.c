@@ -10,5 +10,5 @@ const char* const AudioBackList[] = {
 size_t sizeOfAudioBackList = sizeof(AudioBackList) / sizeof(AudioBackList[0]);
 
 void ScreenAudioSelect(void) {
-	SelectFromListOnly("Select instalation type", AudioBackList, sizeOfAudioBackList, &DATA.Audio.selectedString, &DATA.Audio.selected);
+	SelectFromListOnly("Select audio backend: ", AudioBackList, sizeOfAudioBackList, &DATA.Audio.selectedString, &DATA.Audio.selected);
 }

@@ -336,5 +336,5 @@ const char* const LocalesList[] = {
 size_t sizeOfLocalesList = sizeof(LocalesList) / sizeof(LocalesList[0]);
 
 void ScreenLocaleSelect(void) {
-	SelectFromList("Select your default locale", "Custom: ", LocalesList, sizeOfLocalesList, &DATA.Locale.string, &DATA.Locale.selected, &DATA.Locale.stringSizeOf, &DATA.Locale.custom);
+	SelectFromList("Select your default locale: ", "Custom: ", LocalesList, sizeOfLocalesList, &DATA.Locale.string, &DATA.Locale.selected, &DATA.Locale.stringSizeOf, &DATA.Locale.custom);
 }

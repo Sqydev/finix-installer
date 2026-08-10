@@ -59,5 +59,5 @@ const char* const KernelsList[] = {
 size_t sizeOfKernelsList = sizeof(KernelsList) / sizeof(KernelsList[0]);
 
 void ScreenKernelSelect(void) {
-	SelectFromList("Select kernel package to be installed", "Custom: ", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected, &DATA.Kernel.stringSizeOf, &DATA.Kernel.custom);
+	SelectFromList("Select kernel package to be installed: ", "Custom: ", KernelsList, sizeOfKernelsList, &DATA.Kernel.string, &DATA.Kernel.selected, &DATA.Kernel.stringSizeOf, &DATA.Kernel.custom);
 }

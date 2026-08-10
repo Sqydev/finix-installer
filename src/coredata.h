@@ -4,10 +4,28 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+
+#define GREET_IDX 0
+
+#define LOCALES_IDX 2
+#define PARTITIONS_IDX 3
+#define SWAP_IDX 4
+#define HOSTNAME_IDX 5
+#define ROOTPASSWD_IDX 6
+#define USERS_IDX 7
+#define AUDIO_IDX 8
+#define KERNEL_IDX 9
+#define TIMEZONES_IDX 10
+#define INSTALLTYPE_IDX 11
+
+#define CONTINUE_IDX 13
+#define ABORT_IDX 14
+
 typedef enum {
 	SCREEN_EXIT,
 	SCREEN_MAIN,
 	SCREEN_LOCALE,
+	SCREEN_SWAP,
 	SCREEN_HOSTNAME,
 	SCREEN_ROOTPASSWD,
 	SCREEN_AUDIO,
@@ -22,12 +40,20 @@ typedef struct {
 	bool redraw;
 	char gotCh;
 
+	#define selCheckListSize 8
+	bool* selectedCheckList[selCheckListSize];
+	bool allOptionsSelected;
+
 	struct {
 		char* string;
 		bool selected;
 		size_t stringSizeOf;
 		bool custom;
 	} Locale;
+	struct {
+		char* selectedString;
+		bool selected;
+	} Swap;
 	struct {
 		char* string;
 		bool selected;
