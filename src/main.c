@@ -21,6 +21,15 @@ void CleanUp(void) {
 
 	if(DATA.Timezone.custom && DATA.Timezone.string && DATA.Timezone.selected) { free(DATA.Timezone.string); }
 
+	for(size_t i = 0; i < DATA.Users.usersCount; i++) {
+		if(DATA.Users.users[i].name) { free(DATA.Users.users[i].name); }
+		if(DATA.Users.users[i].passwd) { free(DATA.Users.users[i].passwd); }
+	 	for(size_t j = 0; j < DATA.Users.users[i].groupsCount; j++) {
+			if(DATA.Users.users[i].groups[j]) { free(DATA.Users.users[i].groups[j]); }
+	 	}
+		if(DATA.Users.users[i].groups) { free(DATA.Users.users[i].groups); }
+	}
+
 	CloseTui();
 }
 
@@ -52,6 +61,9 @@ int main(int argc, char** argv) {
 	DATA.RootPasswd.selected = false;
 	DATA.RootPasswd.stringSizeOf = 0;
 	DATA.RootPasswd.string = NULL;
+
+	DATA.Users.users = NULL;
+	DATA.Users.usersCount = 0;
 
 	DATA.Audio.selected = false;
 	DATA.Audio.selectedString = NULL;
@@ -108,6 +120,10 @@ int main(int argc, char** argv) {
 			}
 			case SCREEN_ROOTPASSWD: {
 				ScreenRootPasswdSelect();
+				break;
+			}
+			case SCREEN_USERS: {
+				ScreenUsers();
 				break;
 			}
 			case SCREEN_AUDIO: {

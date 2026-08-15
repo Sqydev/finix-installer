@@ -28,6 +28,7 @@ typedef enum {
 	SCREEN_SWAP,
 	SCREEN_HOSTNAME,
 	SCREEN_ROOTPASSWD,
+	SCREEN_USERS,
 	SCREEN_AUDIO,
 	SCREEN_KERNEL,
 	SCREEN_TIMEZONE,
@@ -35,10 +36,18 @@ typedef enum {
 } Screen;
 
 typedef struct {
+	char* name;
+	char* passwd;
+
+	char** groups;
+	char* groupsRaw;
+	size_t groupsCount;
+} User;
+
+typedef struct {
 	Screen screenState;
 	int cursorPos;
 	bool redraw;
-	char gotCh;
 
 	#define selCheckListSize 8
 	bool* selectedCheckList[selCheckListSize];
@@ -64,6 +73,10 @@ typedef struct {
 		bool selected;
 		size_t stringSizeOf;
 	} RootPasswd;
+	struct {
+		User* users;
+		size_t usersCount;
+	} Users;
 	struct {
 		char* selectedString;
 		bool selected;

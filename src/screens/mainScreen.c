@@ -13,7 +13,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Swap:                  %s", 3, SWAP_IDX, TERMWHITE, (DATA.Swap.selected) ? DATA.Swap.selectedString : "Not selected");
 	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE, (DATA.Hostname.selected) ? DATA.Hostname.string : "Not selected");
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE, (DATA.RootPasswd.selected) ? DATA.RootPasswd.string : "Not selected");
-	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE);
+	DrawTextf("Users:                 %s", 3, USERS_IDX, TERMWHITE, (DATA.Users.usersCount > 0) ? "Done" : "Not selected");
 	DrawTextf("Audio:                 %s", 3, AUDIO_IDX, TERMWHITE, (DATA.Audio.selected) ? DATA.Audio.selectedString : "Not selected");
 	DrawTextf("Kernels:               %s", 3, KERNEL_IDX, TERMWHITE, (DATA.Kernel.selected) ? DATA.Kernel.string : "Not selected");
 	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.string : "Not selected");
@@ -42,6 +42,7 @@ void ScreenMain(void) {
 		else if(DATA.cursorPos == SWAP_IDX) { DATA.screenState = SCREEN_SWAP; }
 		else if(DATA.cursorPos == HOSTNAME_IDX) { DATA.screenState = SCREEN_HOSTNAME; }
 		else if(DATA.cursorPos == ROOTPASSWD_IDX) { DATA.screenState = SCREEN_ROOTPASSWD; }
+		else if(DATA.cursorPos == USERS_IDX) { DATA.screenState = SCREEN_USERS; }
 		else if(DATA.cursorPos == AUDIO_IDX) { DATA.screenState = SCREEN_AUDIO; }
 		else if(DATA.cursorPos == KERNEL_IDX) { DATA.screenState = SCREEN_KERNEL; }
 		else if(DATA.cursorPos == TIMEZONES_IDX) { DATA.screenState = SCREEN_TIMEZONE; }

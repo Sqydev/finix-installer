@@ -1,3 +1,7 @@
+CHAINGE IF'S IN mainScreen.c to SWITCH !!!!!!!!!!!
+
+Handle local heaped vars frees in ctrl+c
+
 Add error handling
 
-Do one last rewrite cuz yk. It's the first installer and there were some poor decisions
+Add free's in userScreen.c
