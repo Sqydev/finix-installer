@@ -21,9 +21,9 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 
 	DrawText(isAdd ? "Add User: " : "Edit User: ", 0, 0, TERMWHITE);
 
-	DrawTextf("Username:	 %s", 3, 2, TERMWHITE, DATA.Users.users[idx].name);
-	DrawTextf("Password:	 %s", 3, 3, TERMWHITE, DATA.Users.users[idx].passwd);
-	DrawTextf("Groups:	   %s", 3, 4, TERMWHITE, DATA.Users.users[idx].groupsRaw);
+	DrawTextf("Username:     %s", 3, 2, TERMWHITE, DATA.Users.users[idx].name);
+	DrawTextf("Password:     %s", 3, 3, TERMWHITE, DATA.Users.users[idx].passwd);
+	DrawTextf("Groups:       %s", 3, 4, TERMWHITE, DATA.Users.users[idx].groupsRaw);
 
 	DrawText(isAdd ? "Add" : "Save", 3, 6, TERMWHITE);
 	DrawText("DELETE!!!", 3, 7, TERMWHITE);
@@ -42,7 +42,7 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 	if(IsKeyPressed(KEY_ENTER)) {
 		switch(DATA.cursorPos) {
 			case 2: {
-				DrawLineEx(" ", strlen("   Username:	 "), 2, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
+				DrawLineEx(" ", strlen("   Username:     "), 2, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
 				char* tring = GetStringFromUser((Vector2i){ 17, DATA.cursorPos });
 				
 				if(!tring) { return; }
@@ -55,7 +55,7 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 				break;
 			}
 			case 3: {
-				DrawLineEx(" ", strlen("   Password:	 "), 3, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
+				DrawLineEx(" ", strlen("   Password:     "), 3, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
 				char* tring = GetStringFromUser((Vector2i){ 17, DATA.cursorPos });
 				
 				if(!tring) { return; }
@@ -68,7 +68,7 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 				break;
 			}
 			case 4: {
-				DrawLineEx(" ", strlen("   Groups:	   "), 4, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
+				DrawLineEx(" ", strlen("   Groups:     "), 4, GetLastTuiIndex().x, 5, &TERMWHITE, &TERMBLACK, 1);
 				char* tring = GetStringFromUser((Vector2i){ 17, DATA.cursorPos });
 				
 				if(!tring) { return; }
@@ -101,6 +101,7 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 				free(groupsCopy);
 
 				if(isAdd) { DATA.Users.usersCount++; }
+				if(DATA.Users.usersCount > 0) { DATA.Users.done = true; }
 				*state = TAMPRING_NONE;
 				DATA.cursorPos = 2;
 				break;
@@ -121,6 +122,8 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 					}
 					DATA.Users.usersCount--;
 				}
+
+				if(DATA.Users.usersCount <= 0) { DATA.Users.done = false; }
 
 				*state = TAMPRING_NONE;
 				DATA.cursorPos = 2;

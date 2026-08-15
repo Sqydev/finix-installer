@@ -85,10 +85,11 @@ int main(int argc, char** argv) {
 	DATA.selectedCheckList[1] = &DATA.Swap.selected;
 	DATA.selectedCheckList[2] = &DATA.Hostname.selected;
 	DATA.selectedCheckList[3] = &DATA.RootPasswd.selected;
-	DATA.selectedCheckList[4] = &DATA.Audio.selected;
-	DATA.selectedCheckList[5] = &DATA.Kernel.selected;
-	DATA.selectedCheckList[6] = &DATA.Timezone.selected;
-	DATA.selectedCheckList[7] = &DATA.InstallType.selected;
+	DATA.selectedCheckList[4] = &DATA.Users.done;
+	DATA.selectedCheckList[5] = &DATA.Audio.selected;
+	DATA.selectedCheckList[6] = &DATA.Kernel.selected;
+	DATA.selectedCheckList[7] = &DATA.Timezone.selected;
+	DATA.selectedCheckList[8] = &DATA.InstallType.selected;
 
 	for(;;) {
 		BeginDrawing();

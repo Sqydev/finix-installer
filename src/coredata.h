@@ -49,7 +49,7 @@ typedef struct {
 	int cursorPos;
 	bool redraw;
 
-	#define selCheckListSize 8
+	#define selCheckListSize 9
 	bool* selectedCheckList[selCheckListSize];
 	bool allOptionsSelected;
 
@@ -76,6 +76,7 @@ typedef struct {
 	struct {
 		User* users;
 		size_t usersCount;
+		bool done;
 	} Users;
 	struct {
 		char* selectedString;
