@@ -17,7 +17,7 @@ char* GetStringFromUser(Vector2i currPos) {
 	ShowCursor();
 	SetCursorPositionV(currPos);
 
-	EndDrawing();
+	EndFrame();
 
 	char* tring = malloc(TRING_INITSIZE * sizeof(char));
 	tring[0] = '\0';
@@ -28,7 +28,7 @@ char* GetStringFromUser(Vector2i currPos) {
 	Vector2i tringPos = currPos;
 	
 	while(1) {
-		BeginDrawing();
+		BeginFrame();
 
 		EscKey gotKey = WaitForKeyPress();
 		if(gotKey != KEY_NULL) {
@@ -52,9 +52,9 @@ char* GetStringFromUser(Vector2i currPos) {
 		
 		DrawTextV(tring, tringPos, TERMWHITE);
 
-		EndDrawing();
+		EndFrame();
 	}
-	BeginDrawing();
+	BeginFrame();
 
 	HideCursor();
 

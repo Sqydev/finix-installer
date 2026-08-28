@@ -38,6 +38,7 @@ typedef enum {
 typedef struct {
 	char* name;
 	char* passwd;
+	bool isNormalUser;
 
 	char** groups;
 	char* groupsRaw;

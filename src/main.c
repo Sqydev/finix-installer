@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
 	DATA.selectedCheckList[8] = &DATA.InstallType.selected;
 
 	for(;;) {
-		BeginDrawing();
+		BeginFrame();
 
 		DATA.allOptionsSelected = true;
 		for(int i = 0; i < selCheckListSize; i++) {
@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		EndDrawing();
+		EndFrame();
 	}
 
 	end:

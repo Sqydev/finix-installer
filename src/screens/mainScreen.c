@@ -19,7 +19,7 @@ void DrawScreenMain(void) {
 	DrawTextf("Timezone:              %s", 3, TIMEZONES_IDX, TERMWHITE, (DATA.Timezone.selected) ? DATA.Timezone.string : "Not selected");
 	DrawTextf("Install type:          %s", 3, INSTALLTYPE_IDX, TERMWHITE, (DATA.InstallType.selected) ? DATA.InstallType.selectedString : "Not selected");
 
-	if(!DATA.allOptionsSelected) { DrawText("Continue", 3, CONTINUE_IDX, (Color){ 7, 0, 0, 0 }); }
+	if(!DATA.allOptionsSelected) { DrawText("Continue", 3, CONTINUE_IDX, (Color){ 7, 0, 0, 1, false }); }
 	else { DrawText("Continue", 3, CONTINUE_IDX, TERMWHITE); }
 	DrawText("Abort", 3, ABORT_IDX, TERMWHITE);
 }

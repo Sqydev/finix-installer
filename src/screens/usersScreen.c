@@ -16,17 +16,18 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 
 	bool isAdd = (*state == TAMPRING_USER_ADD);
 
-	int skip[1] = { 5 };
-	HandleCursor(2, 7, skip, 1);
+	int skip[1] = { 6 };
+	HandleCursor(2, 8, skip, 1);
 
 	DrawText(isAdd ? "Add User: " : "Edit User: ", 0, 0, TERMWHITE);
 
 	DrawTextf("Username:     %s", 3, 2, TERMWHITE, DATA.Users.users[idx].name);
 	DrawTextf("Password:     %s", 3, 3, TERMWHITE, DATA.Users.users[idx].passwd);
 	DrawTextf("Groups:       %s", 3, 4, TERMWHITE, DATA.Users.users[idx].groupsRaw);
+	DrawTextf("IsNormalUser: %s", 3, 5, TERMWHITE, DATA.Users.users[idx].isNormalUser ? "true" : "false");
 
-	DrawText(isAdd ? "Add" : "Save", 3, 6, TERMWHITE);
-	DrawText("DELETE!!!", 3, 7, TERMWHITE);
+	DrawText(isAdd ? "Add" : "Save", 3, 7, TERMWHITE);
+	DrawText("DELETE!!!", 3, 8, TERMWHITE);
 
 	if(IsKeyPressed(KEY_ESCAPE)) {
 		if(isAdd) {
@@ -80,7 +81,11 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 				else { free(tring); DATA.Users.users[idx].groupsRaw[0] = '\0'; }
 				break;
 			}
-			case 6: {
+			case 5: {
+				DATA.Users.users[idx].isNormalUser = !DATA.Users.users[idx].isNormalUser;
+				break;
+			}
+			case 7: {
 				char* groupsCopy = strdup(DATA.Users.users[idx].groupsRaw);
 				char* tok = strtok(groupsCopy, " ");
 				
@@ -106,7 +111,7 @@ void UserTampringScreen(UserTampringType* state, size_t idx) {
 				DATA.cursorPos = 2;
 				break;
 			}
-			case 7: {
+			case 8: {
 				skipToDELETE:
 				if(DATA.Users.users[idx].name) { free(DATA.Users.users[idx].name); }
 				if(DATA.Users.users[idx].passwd) { free(DATA.Users.users[idx].passwd); }
@@ -171,7 +176,9 @@ void ScreenUsers(void) {
 			DATA.Users.users[DATA.Users.usersCount].groupsRaw = malloc(1); DATA.Users.users[DATA.Users.usersCount].groupsRaw[0] = '\0';
 			DATA.Users.users[DATA.Users.usersCount].groupsCount = 0;
 			DATA.Users.users[DATA.Users.usersCount].groups = NULL;
-		} else if(DATA.cursorPos >= 4 && DATA.cursorPos < (int)(4 + DATA.Users.usersCount)) {
+			DATA.Users.users[DATA.Users.usersCount].isNormalUser = true;
+		}
+		else if(DATA.cursorPos >= 4 && DATA.cursorPos < (int)(4 + DATA.Users.usersCount)) {
 			tampringState = TAMPRING_USER_EDIT;
 			tampringIdx = DATA.cursorPos - 4;
 		}

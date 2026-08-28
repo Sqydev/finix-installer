@@ -83,17 +83,19 @@ extern "C" {
 	#define RAD2DEG (180.0f/PI)
 #endif
 
-// If trueColor == true, rgb is rgb if trueColor == false than the color == r + g + b. WARNING: Terminals have stupid thing that in trueColor if fg == 0, 0, 255 and bg == 255, 0, 0 than the terminal blends the fg to 255, 0, 255. If anyone knows how to turn this off than PLEASE tell me, but for now just keep that fact in mind
-typedef struct {
+// If trueColor == true then it will do normal rgba. If trueColor == false then it will sum rgb and choose 8, 16 or 256 color pallete depending on the number and alpha will become 1 or 0. Also, beware because terminals are wierd with non-trueColor fg on bg
+typedef struct Color {
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
+	unsigned char a;
+
 	bool trueColor;
 } Color;
 
 
 
-typedef struct {
+typedef struct SBCell {
 	char Char[4];
 	char CharLen;
 
@@ -103,47 +105,47 @@ typedef struct {
 
 
 
-typedef struct {
-	float x;
-	float y;
-} Vector2;
-
-typedef struct {
+typedef struct Vector2i {
 	int x;
 	int y;
 } Vector2i;
 
-typedef struct {
+typedef struct Vector2 {
+	float x;
+	float y;
+} Vector2;
+
+typedef struct Vector2d {
 	double x;
 	double y;
 } Vector2d;
 
-typedef struct {
+typedef struct Vector2l {
 	long x;
 	long y;
 } Vector2l;
 
 
 
-typedef struct {
-	float x;
-	float y;
-	float z;
-} Vector3;
-
-typedef struct {
+typedef struct Vector3i {
 	int x;
 	int y;
 	int z;
 } Vector3i;
 
-typedef struct {
+typedef struct Vector3 {
+	float x;
+	float y;
+	float z;
+} Vector3;
+
+typedef struct Vector3d {
 	double x;
 	double y;
 	double z;
 } Vector3d;
 
-typedef struct {
+typedef struct Vector3l {
 	long x;
 	long y;
 	long z;
@@ -151,28 +153,28 @@ typedef struct {
 
 
 
-typedef struct {
-	float x;
-	float y;
-	float z;
-	float w;
-} Vector4;
-
-typedef struct {
+typedef struct Vector4i {
 	int x;
 	int y;
 	int z;
 	int w;
 } Vector4i;
 
-typedef struct {
+typedef struct Vector4 {
+	float x;
+	float y;
+	float z;
+	float w;
+} Vector4;
+
+typedef struct Vector4d {
 	double x;
 	double y;
 	double z;
 	double w;
 } Vector4d;
 
-typedef struct {
+typedef struct Vector4l {
 	long x;
 	long y;
 	long z;
@@ -181,28 +183,28 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct Rectangle {
 	int x;
 	int y;
 	int width;
 	int height;
 } Rectangle;
 
-typedef struct {
+typedef struct Rectanglef {
 	float x;
 	float y;
 	float width;
 	float height;
 } Rectanglef;
 
-typedef struct {
+typedef struct Rectangled {
 	double x;
 	double y;
 	double width;
 	double height;
 } Rectangled;
 
-typedef struct {
+typedef struct Rectanglel {
 	long x;
 	long y;
 	long width;
@@ -211,25 +213,25 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct Circle {
 	int centerX;
 	int centerY;
 	int radius;
 } Circle;
 
-typedef struct {
+typedef struct Circlef {
 	float centerX;
 	float centerY;
 	float radius;
 } Circlef;
 
-typedef struct {
+typedef struct Circled {
 	double centerX;
 	double centerY;
 	double radius;
 } Circled;
 
-typedef struct {
+typedef struct Circlel {
 	long centerX;
 	long centerY;
 	long radius;
@@ -237,25 +239,25 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct Triangle {
 	Vector2i A;
 	Vector2i B;
 	Vector2i C;
 } Triangle;
 
-typedef struct {
+typedef struct Trianglef {
 	Vector2 A;
 	Vector2 B;
 	Vector2 C;
 } Trianglef;
 
-typedef struct {
+typedef struct Triangled {
 	Vector2d A;
 	Vector2d B;
 	Vector2d C;
 } Triangled;
 
-typedef struct {
+typedef struct Trianglel {
 	Vector2l A;
 	Vector2l B;
 	Vector2l C;
@@ -263,7 +265,7 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct Panel {
 	int x;
 	int y;
 	int width;
@@ -272,7 +274,35 @@ typedef struct {
 
 
 
-typedef enum {
+typedef enum TextureType {
+	TEXTURE_MONO,
+	TEXTURE_8COLOR,
+    TEXTURE_16COLOR,
+    TEXTURE_256COLOR,
+    TEXTURE_TRUECOLOR,
+} TextureType;
+
+
+typedef enum ScalingAlgorithms {
+	SCALEING_NEAREST_NEIGHBOR,
+	SCALEING_BILINEAR,
+	SCALEING_BICUBIC,
+} ScalingAlgorithms;
+
+
+typedef struct Texture {
+	unsigned char* data;
+	TextureType type;
+
+	size_t id;
+	size_t width;
+	size_t height;
+} Texture;
+typedef Texture Texture2D;
+
+
+
+typedef enum TuiType{
 	TUI_STATIC,
 	TUI_DYNAMIC
 } TuiType;
@@ -280,9 +310,9 @@ typedef enum {
 typedef struct Kernel Kernel;
 
 
-typedef int32_t EscKey;
 
-typedef enum {
+typedef int32_t EscKey;
+typedef enum SpecialKeys {
 	KEY_NULL = 0,
 
 	KEY_ESCAPE    = 0x110001,
@@ -314,7 +344,8 @@ typedef enum {
 } SpecialKeys;
 
 
-typedef enum {
+
+typedef enum LogLevel {
 	LOG_ERROR = 3,
 	LOG_WARNING = 2,
 	LOG_INFO = 1,
@@ -323,14 +354,21 @@ typedef enum {
 
 
 
-#define TERMWHITE (Color){ 15, 0, 0, 0 }
-#define TERMBLACK (Color){ 0, 0, 0, 0 }
+#define TERMWHITE (Color){ 15, 0, 0, true, false }
+#define TERMBLACK (Color){ 0, 0, 0, true, false }
+#define TERMBLANK (Color){ 0, 0, 0, false, false }
 
-#define WHITE (Color){ 255, 0, 0, 0 }
-#define BLACK (Color){ 232, 0, 0, 0 }
+#define WHITE (Color){ 255, 0, 0, true, false }
+#define BLACK (Color){ 232, 0, 0, true, false }
+#define BLANK (Color){ 232, 0, 0, false, false }
 
-#define TRUEWHITE (Color){ 255, 255, 255, 1 }
-#define TRUEBLACK (Color){ 0, 0, 0, 1 }
+#define TRUEWHITE (Color){ 255, 255, 255, 255, true }
+#define TRUEBLACK (Color){ 0, 0, 0, 255, true }
+#define TRUEBLANK (Color){ 0, 0, 0, 0, true }
+
+
+#define WHOLETEXTURE(texture) (Rectangle){ 0, 0, texture.width, texture.height }
+
 
 // ECORE
 
@@ -351,8 +389,8 @@ RLAPI int AddPanicTask(void (*task)(void));
 // Will return 0 if succesfull -1 if failed
 RLAPI int RemovePanicTask(size_t index);
 
-RLAPI void BeginDrawing(void);
-RLAPI void EndDrawing(void);
+RLAPI void BeginFrame(void);
+RLAPI void EndFrame(void);
 
 RLAPI void ClearTui(Color BgColor, Color FgColor);
 
@@ -465,12 +503,15 @@ RLAPI Vector2d EDir(double angle);
 RLAPI void ESleep(unsigned long sec, unsigned long ms, unsigned long ns);
 RLAPI int GetCharWidth(const char* character);
 
+RLAPI void BlendColors(Color* dst, Color src);
+
 // ETEXT
 
 RLAPI void DrawCharV(const char* character, Vector2i pos, Color color);
 RLAPI void DrawChar(const char* character, int x, int y, Color color);
 RLAPI void DrawCharExV(const char* character, Vector2i pos, Color* fg, Color* bg);
 RLAPI void DrawCharEx(const char* character, int x, int y, Color* fg, Color* bg);
+RLAPI void DrawCharCore(const char* character, int x, int y, Color* fg, Color* bg, bool isPanel, Panel panel);
 
 RLAPI void DrawTextV(const char* text, Vector2i pos, Color color);
 RLAPI void DrawText(const char* text, int x, int y, Color color);
@@ -478,6 +519,7 @@ RLAPI void DrawTextExV(const char* text, Vector2i pos, Color* fg, Color* bg);
 RLAPI void DrawTextEx(const char* text, int x, int y, Color* fg, Color* bg);
 RLAPI void DrawTextProV(const char* text, Vector2i pos, Vector2i origin, Color* fg, Color* bg, int spaceing, float angle);
 RLAPI void DrawTextPro(const char* text, int x, int y, int originX, int originY, Color* fg, Color* bg, int spaceing, float angle);
+RLAPI void DrawTextCore(const char* text, int x, int y, int originX, int originY, Color* fg, Color* bg, int spaceing, float angle, bool isPanel, Panel panel);
 
 RLAPI void DrawTextfV(const char* text, Vector2i pos, Color color, ...);
 RLAPI void DrawTextf(const char* text, int x, int y, Color color, ...);
@@ -485,13 +527,13 @@ RLAPI void DrawTextfExV(const char* text, Vector2i pos, Color* fg, Color* bg, ..
 RLAPI void DrawTextfEx(const char* text, int x, int y, Color* fg, Color* bg, ...);
 RLAPI void DrawTextfProV(const char* text, Vector2i pos, Vector2i origin, Color* fg, Color* bg, int spaceing, double angle, ...);
 RLAPI void DrawTextfPro(const char* text, int x, int y, int originX, int originY, Color* fg, Color* bg, int spaceing, double angle, ...);
-
 RLAPI void vaDrawTextfV(const char* text, Vector2i pos, Color color, va_list va);
 RLAPI void vaDrawTextf(const char* text, int x, int y, Color color, va_list va);
 RLAPI void vaDrawTextfExV(const char* text, Vector2i pos, Color* fg, Color* bg, va_list va);
 RLAPI void vaDrawTextfEx(const char* text, int x, int y, Color* fg, Color* bg, va_list va);
 RLAPI void vaDrawTextfProV(const char* text, Vector2i pos, Vector2i origin, Color* fg, Color* bg, int spacing, double angle, va_list va);
 RLAPI void vaDrawTextfPro(const char* text, int x, int y, int originX, int originY, Color* fg, Color* bg, int spacing, double angle, va_list va);
+RLAPI void vaDrawTextfCore(const char* text, int x, int y, int originX, int originY, Color* fg, Color* bg, int spacing, double angle, bool isPanel, Panel panel, va_list va);
 
 // ESHAPES
 
@@ -501,6 +543,7 @@ RLAPI void DrawLineExV(char* character, Vector2i pointA, Vector2i pointB, Color*
 RLAPI void DrawLineEx(char* character, int pointAX, int pointAY, int pointBX, int pointBY, Color* fg, Color* bg, int thickness);
 RLAPI void DrawLineProV(char* character, Vector2i pointA, Vector2i pointB, Color* fg, Color* bg, int thickness);
 RLAPI void DrawLinePro(char* character, int pointAX, int pointAY, int pointBX, int pointBY, Color* fg, Color* bg, int thickness);
+RLAPI void DrawLineCore(char* character, int pointAX, int pointAY, int pointBX, int pointBY, Color* fg, Color* bg, int thickness, bool isPanel, Panel panel);
 
 RLAPI void DrawRectangleRec(Rectangle rec, Color color);
 RLAPI void DrawRectangleV(Vector2i pos, Vector2i dimms, Color color);
@@ -511,6 +554,7 @@ RLAPI void DrawRectangleEx(char* character, int x, int y, int width, int height,
 RLAPI void DrawRectangleProRec(char* character, Rectangle rec, Vector2i origin, Color* fg, Color* bg, double rotation, float roundness, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawRectangleProV(char* character, Vector2i pos, Vector2i dimms, Vector2i origin, Color* fg, Color* bg, double rotation, float roundness, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawRectanglePro(char* character, int posX, int posY, int width, int height, int originX, int originY, Color* fg, Color* bg, double rotation, float roundness, bool lines, int thicknessLines, bool aspectRatiofied);
+RLAPI void DrawRectangleCore(char* character, int posX, int posY, int width, int height, int originX, int originY, Color* fg, Color* bg, double rotation, float roundness, bool lines, int thicknessLines, bool aspectRatiofied, bool isPanel, Panel panel);
 
 RLAPI void DrawCircleCir(Circle circle, Color color);
 RLAPI void DrawCircleV(Vector2i centerPos, int radius, Color color);
@@ -521,6 +565,7 @@ RLAPI void DrawCircleEx(char* character, int centerX, int centerY, int radius, C
 RLAPI void DrawCircleProCir(char* character, Circle circle, Vector2d angleSpectrum, Color* fg, Color* bg, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawCircleProV(char* character, Vector2i centerPos, int radius, Vector2d angleSpectrum, Color* fg, Color* bg, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawCirclePro(char* character, int centerX, int centerY, int radius, double startAngle, double endAngle, Color* fg, Color* bg, bool lines, int thicknessLines, bool aspectRatiofied);
+RLAPI void DrawCircleCore(char* character, int centerX, int centerY, int radius, double startAngle, double endAngle, Color* fg, Color* bg, bool lines, int thicknessLines, bool aspectRatiofied, bool isPanel, Panel panel);
 
 RLAPI void DrawTriangleTri(Triangle triangle, Color color);
 RLAPI void DrawTriangleV(Vector2i posA, Vector2i posB, Vector2i posC, Color color);
@@ -531,14 +576,15 @@ RLAPI void DrawTriangleEx(char* character, int Ax, int Ay, int Bx, int By, int C
 RLAPI void DrawTriangleProTri(char* character, Triangle triangle, Vector2i origin, Color* fg, Color* bg, double rotation, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawTriangleProV(char* character, Vector2i posA, Vector2i posB, Vector2i posC, Vector2i origin, Color* fg, Color* bg, double rotation, bool lines, int thicknessLines, bool aspectRatiofied);
 RLAPI void DrawTrianglePro(char* character, int Ax, int Ay, int Bx, int By, int Cx, int Cy, int originX, int originY, Color* fg, Color* bg, double rotation, bool lines, int thicknessLines, bool aspectRatiofied);
+RLAPI void DrawTriangleCore(char* character, int Ax, int Ay, int Bx, int By, int Cx, int Cy, int originX, int originY, Color* fg, Color* bg, double rotation, bool lines, int thicknessLines, bool aspectRatiofied, bool isPanel, Panel panel);
 
 // EINPUT
 
-void PressKey(EscKey key);
-bool IsKeyPressed(EscKey key);
-EscKey GetKeyPressed(void);
-EscKey WaitForKeyPress(void);
-void WaitForKeyPressAndRegister(void);
+RLAPI void PressKey(EscKey key);
+RLAPI bool IsKeyPressed(EscKey key);
+RLAPI EscKey GetKeyPressed(void);
+RLAPI EscKey WaitForKeyPress(void);
+RLAPI void WaitForKeyPressAndRegister(void);
 
 // OPENCL
 
@@ -639,6 +685,17 @@ RLAPI void MoveCursor(int posX, int posY);
 
 RLAPI void HideCursor(void);
 RLAPI void ShowCursor(void);
+
+// ETEXTURES
+RLAPI Texture LoadTexture(const char* path, TextureType type);
+RLAPI void FreeTexture(Texture* texture);
+
+RLAPI void DrawTexture(Texture* texture, Rectangle rec);
+RLAPI void DrawTextureEx(Texture* texture, char* character, Rectangle rec, Color tint, bool affectFg, bool affectBg);
+// If texture.type != true color then it will only do nearest neighbour
+RLAPI void DrawTexturePro(Texture* texture, char* character, Rectangle rec, Rectangle textureSlice, int originX, int originY, double rotation, Color tint, bool affectFg, bool affectBg, ScalingAlgorithms scaling, bool aspectRatiofied);
+// If texture.type != true color then it will only do nearest neighbour
+RLAPI void DrawTextureCore(Texture* texture, char* character, Rectangle rec, Rectangle textureSlice, int originX, int originY, double rotation, Color tint, bool affectFg, bool affectBg, ScalingAlgorithms scaling, bool aspectRatiofied, bool isPanel, Panel panel);
 
 #ifdef __cplusplus
 }
