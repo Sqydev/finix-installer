@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-
 #define GREET_IDX 0
 
 #define LOCALES_IDX 2
@@ -25,6 +24,7 @@ typedef enum {
 	SCREEN_EXIT,
 	SCREEN_MAIN,
 	SCREEN_LOCALE,
+	SCREEN_PARTITIONS,
 	SCREEN_SWAP,
 	SCREEN_HOSTNAME,
 	SCREEN_ROOTPASSWD,
@@ -34,6 +34,15 @@ typedef enum {
 	SCREEN_TIMEZONE,
 	SCREEN_INSTALLTYPE,
 } Screen;
+
+typedef struct {
+	char* mountPoint;
+	char* label;
+
+	char* uuid;
+	char* name;
+	char* path;
+} Partition;
 
 typedef struct {
 	char* name;
@@ -60,6 +69,9 @@ typedef struct {
 		size_t stringSizeOf;
 		bool custom;
 	} Locale;
+	struct {
+		Partition* partitions;
+	} Partitioning;
 	struct {
 		char* selectedString;
 		bool selected;

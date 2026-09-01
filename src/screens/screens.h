@@ -4,6 +4,7 @@
 void ScreenMain(void);
 
 void ScreenLocaleSelect(void);
+void ScreenPartitions(void);
 void ScreenSwapSelect(void);
 void ScreenHostnameSelect(void);
 void ScreenRootPasswdSelect(void);

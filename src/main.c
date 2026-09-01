@@ -111,6 +111,10 @@ int main(int argc, char** argv) {
 				ScreenLocaleSelect();
 				break;
 			}
+			case SCREEN_PARTITIONS: {
+				ScreenPartitions();
+				break;
+			}
 			case SCREEN_SWAP: {
 				ScreenSwapSelect();
 				break;
