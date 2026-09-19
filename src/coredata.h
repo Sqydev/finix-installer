@@ -42,6 +42,13 @@ typedef struct {
 	char* uuid;
 	char* name;
 	char* path;
+
+	char* filesystem;
+	char* sizeStr;
+
+	bool format;
+	bool luks;
+	bool modified;
 } Partition;
 
 typedef struct {
@@ -71,6 +78,8 @@ typedef struct {
 	} Locale;
 	struct {
 		Partition* partitions;
+		size_t partitionsCount;
+		char* selectedDisk;
 	} Partitioning;
 	struct {
 		char* selectedString;

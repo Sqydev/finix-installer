@@ -35,14 +35,25 @@ char* GetStringFromUser(Vector2i currPos) {
 			if(gotKey == KEY_ENTER) { break; }
 			if(gotKey == KEY_ESCAPE) { free(tring); tring = NULL; break; }
 
-			if(tringCap >= tringIdx) {
-				tring = realloc(tring, (tringCap + 1) * sizeof(char));
-				if(!tring) { break; }
+			if(gotKey == KEY_BACKSPACE) {
+				if(tringIdx == 0) { continue; }
 
-				tringCap++;
+				tringIdx--;
+				tring[tringIdx] = '\0';
+
+				currPos.x--;
+
+				continue;
 			}
 
-			tring[tringIdx++] = gotKey;
+			if(tringIdx + 2 > tringCap) {
+				tring = realloc(tring, (tringCap * 2 + 2) * sizeof(char));
+				if(!tring) { break; }
+
+				tringCap = tringCap * 2 + 2;
+			}
+
+			tring[tringIdx++] = (char)gotKey;
 			tring[tringIdx] = '\0';
 
 			currPos.x++;

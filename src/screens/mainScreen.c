@@ -9,7 +9,7 @@ void DrawScreenMain(void) {
 	DrawText("Welcome to the finix installer", 0, GREET_IDX, TERMWHITE);
 
 	DrawTextf("Locales:               %s", 3, LOCALES_IDX, TERMWHITE, (DATA.Locale.selected) ? DATA.Locale.string : "Not selected");
-	DrawTextf("Partitioning:            ", 3, PARTITIONS_IDX, TERMWHITE);
+	DrawText("Partitioning", 3, PARTITIONS_IDX, TERMWHITE);
 	DrawTextf("Swap:                  %s", 3, SWAP_IDX, TERMWHITE, (DATA.Swap.selected) ? DATA.Swap.selectedString : "Not selected");
 	DrawTextf("Hostname:              %s", 3, HOSTNAME_IDX, TERMWHITE, (DATA.Hostname.selected) ? DATA.Hostname.string : "Not selected");
 	DrawTextf("Root password:         %s", 3, ROOTPASSWD_IDX, TERMWHITE, (DATA.RootPasswd.selected) ? DATA.RootPasswd.string : "Not selected");

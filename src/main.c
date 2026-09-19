@@ -21,6 +21,19 @@ void CleanUp(void) {
 
 	if(DATA.Timezone.custom && DATA.Timezone.string && DATA.Timezone.selected) { free(DATA.Timezone.string); }
 
+	for(size_t i = 0; i < DATA.Partitioning.partitionsCount; i++) {
+		Partition* p = &DATA.Partitioning.partitions[i];
+		if(p->mountPoint) { free(p->mountPoint); }
+		if(p->label) { free(p->label); }
+		if(p->uuid) { free(p->uuid); }
+		if(p->name) { free(p->name); }
+		if(p->path) { free(p->path); }
+		if(p->filesystem) { free(p->filesystem); }
+		if(p->sizeStr) { free(p->sizeStr); }
+	}
+	if(DATA.Partitioning.partitions) { free(DATA.Partitioning.partitions); }
+	if(DATA.Partitioning.selectedDisk) { free(DATA.Partitioning.selectedDisk); }
+
 	for(size_t i = 0; i < DATA.Users.usersCount; i++) {
 		if(DATA.Users.users[i].name) { free(DATA.Users.users[i].name); }
 		if(DATA.Users.users[i].passwd) { free(DATA.Users.users[i].passwd); }
@@ -64,6 +77,10 @@ int main(int argc, char** argv) {
 
 	DATA.Users.users = NULL;
 	DATA.Users.usersCount = 0;
+
+	DATA.Partitioning.partitions = NULL;
+	DATA.Partitioning.partitionsCount = 0;
+	DATA.Partitioning.selectedDisk = NULL;
 
 	DATA.Audio.selected = false;
 	DATA.Audio.selectedString = NULL;

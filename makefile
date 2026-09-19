@@ -23,6 +23,8 @@ CFLAGS := \
 	-Wextra \
 	-Werror \
 	-D_POSIX_C_SOURCE=200809L \
+	-D_XOPEN_SOURCE=700 \
+	-Wno-format-truncation \
 	-O2 \
 	-I$(LIB_DIR)/include
 
